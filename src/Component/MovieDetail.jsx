@@ -127,6 +127,7 @@ function MovieDetail() {
     return <div>{error}</div>;
   }
 console.log(movie);
+console.log();
   return (
     <>
       <div className="movie-detail">
@@ -200,7 +201,7 @@ console.log(movie);
       </div>
       <h2>Top Billed Cast</h2>
       <div className="cast-list">
-        {cast.slice(0, 10).map((member) => (
+        {cast.slice(0, 100).map((member) => (
           <div className="cast-member" key={member.id}>
             <img
               src={member.profile_path

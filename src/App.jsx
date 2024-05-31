@@ -9,6 +9,7 @@ import PopularMovies from './Component/PopularMovies';
 import LatestMovies from './Component/LatestMovies';
 import MovieDetail from './Component/MovieDetail';
 import Watchlist from './Component/Watchlist';
+import Upcoming from './Component/Upcoming';
 
 function App() {
   const [searchResults, setSearchResults] = useState([]);
@@ -23,6 +24,7 @@ function App() {
           <Route path="/TopMovies" element={<TopMovies />} />
           <Route path="/Popular" element={<PopularMovies />} />
           <Route path="/Latest" element={<LatestMovies />} />
+          <Route path="/Upcoming" element={<Upcoming />} />
           <Route path="/movie/:id" element={<MovieDetail />} />
           <Route path='/watchlist' element={<Watchlist />} />
         </Routes>

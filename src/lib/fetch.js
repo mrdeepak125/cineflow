@@ -54,6 +54,20 @@ export const getPopular = async (e) =>{
     }
 }
 
+export const getUpcoming = async (e) =>{
+  try{
+      const response = await fetch ('https://api.themoviedb.org/3/movie/upcoming?api_key=7607c1248159387aca334387ac63e608')
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      return await response.json();
+  }
+  catch (e) {
+      console.log(e);
+      return null;
+  }
+}
+
 export const nowPlaying = async (e) =>{
     try {
         const response = await fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=7607c1248159387aca334387ac63e608');

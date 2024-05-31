@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getLatest, getMovieByQuery, getMovieTop, getPopular } from '../lib/fetch';
+import { useNavigate, Link } from 'react-router-dom';
+import { getLatest, getMovieByQuery, getMovieTop, getPopular, getUpcoming } from '../lib/fetch';
 
 function Navbar({ updateSearchResults }) {
   const [query, setQuery] = useState('');
@@ -129,14 +129,32 @@ const handleLatestMovies = async () => {
   }
 };
 
+const handleUpcomingMovies = async () => {
+  setLoading(true);
+  setError(null);
+
+  try {
+    const data = await getUpcoming();
+    if (data && data.results) {
+      updateSearchResults(data.results);
+      navigate('/Upcoming');
+    } else {
+      setError('No Up Coming movies found');
+    }
+  } catch (e) {
+    setError('Error fetching Up Coming movies: ' + e.message);
+  } finally {
+    setLoading(false);
+  }
+};
   return (
     <>
       <nav className="navbar">
         <div className="navbar-brand">
-          <a href="/">Home</a>
+          <Link to="/">Home</Link>
         </div>
         <div className="navbar-menu">
-          <a href="/watchlist">Watch List</a>
+          <Link to="/watchlist">Watch List</Link>
         </div>
         <div className="navbar-search">
           <input
@@ -192,6 +210,7 @@ const handleLatestMovies = async () => {
         </label>
       </nav>
       <div className='movie-bar'>
+      <button onClick={handleUpcomingMovies}>Up Coming</button>
       <button onClick={handleLatestMovies}>Latest</button>
       <button onClick={handleTopMovies}>Top Movie</button>
         <button onClick={handlePopularMovies}>Popular</button>
