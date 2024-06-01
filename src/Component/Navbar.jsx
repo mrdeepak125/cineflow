@@ -211,7 +211,7 @@ const handleUpcomingMovies = async () => {
       </nav>
       <div className='movie-bar'>
       <button onClick={handleUpcomingMovies}>Up Coming</button>
-      <button onClick={handleLatestMovies}>Latest</button>
+      {/* <button onClick={handleLatestMovies}>Latest</button> */}
       <button onClick={handleTopMovies}>Top Movie</button>
         <button onClick={handlePopularMovies}>Popular</button>
       </div>

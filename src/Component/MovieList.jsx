@@ -1,72 +1,80 @@
-// src/components/MovieList.jsx
-import React, { useEffect, useState } from 'react';
-import { nowPlaying } from '../lib/fetch';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
-const MovieList = () => {
-    const [movies, setMovies] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+const Latest = () => {
+  const [latestMovies, setLatestMovies] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchMovies = async () => {
-            const data = await nowPlaying();
-            if (data && data.results) {
-                setMovies(data.results);
-                console.log(data);
-            } else {
-                setError('Failed to fetch movies');
-            }
-            setLoading(false);
-        };
-
-        fetchMovies();
-    }, []);
-
-    if (loading) {
-        return <div className="spinner-container">
-        <div className="spinner">
-         <div className="spinner">
-          <div className="spinner">
-            <div className="spinner">
-              <div className="spinner">
-                  <div className="spinner"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>;
+  const fetchLatestMovies = async (page) => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `https://api.themoviedb.org/3/movie/now_playing?language=en-US&api_key=7607c1248159387aca334387ac63e608&page=${page}`
+      );
+      setLatestMovies((prevMovies) => [...prevMovies, ...response.data.results]);
+      setLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
     }
+  };
 
-    if (error) {
-        return <div>{error}</div>;
-    }
+  useEffect(() => {
+    fetchLatestMovies(currentPage);
+  }, [currentPage]);
 
+  const handleShowMore = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  if (loading && currentPage === 1) {
     return (
-        <div>
-            <div className='movie-list'>
-                {movies.length > 0 ? (
-                    movies.map(movie => (
-                        <div className='movie-card' key={movie.id}>
-                           <Link to={`/movie/${movie.id}`}>
-                            <img
-                                src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-                                alt={movie.title}
-                            />
-                            </Link>
-                            <div className="movie-info">
-                                <h4>{movie.title}</h4>
-                                {/* <p>{movie.overview}</p> */}
-                            </div>
-                        </div>
-                    ))
-                ) : (
-                    <div>No movies available</div>
-                )}
-            </div>
-        </div>
+      <div className="spinner-container">
+        <div className="spinner"></div>
+      </div>
     );
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  return (
+    <div className="container">
+      <div className="section">
+        <h1 className="section-title">📅 Latest Movies</h1>
+        <div className="movie-list">
+          {latestMovies.map((movie) => (
+            <div className="movie-card" key={movie.id}>
+              <Link to={`/movie/${movie.id}`}>
+                <img
+                  src={movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg'}
+                  alt={movie.title}
+                  // style={{ width: "150px", height: "225px" }}
+                />
+              </Link>
+              <h4>{movie.title}</h4>
+            </div>
+          ))}
+        </div>
+        {loading && (
+          <div className="spinner-container">
+            <div className="spinner"></div>
+          </div>
+        )}
+        <div className="show-load">
+        <div className="show-more">
+          <button onClick={handleShowMore} disabled={loading}>
+            {loading ? "Loading..." : "Show More"}
+          </button>
+        </div>
+      </div>
+      </div>
+    </div>
+  );
 };
 
-export default MovieList;
+export default Latest;
