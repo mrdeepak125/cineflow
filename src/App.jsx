@@ -10,6 +10,8 @@ import MovieDetail from './Component/MovieDetail';
 import Watchlist from './Component/Watchlist';
 import Upcoming from './Component/Upcoming';
 import PersonDetails from "./Component/PersonDetails";
+import TVDetail from "./Component/TVDetail";
+import TvList from './Component/TvList';
 
 function App() {
   const [searchResults, setSearchResults] = useState([]);
@@ -20,11 +22,13 @@ function App() {
         <Navbar updateSearchResults={setSearchResults} />
         <Routes>
           <Route path="/" element={<LatestMovies />} />
+          <Route path="/Tvlist" element={<TvList />} />
           <Route path="/search" element={<SearchResults searchResults={searchResults} />} />
           <Route path="/TopMovies" element={<TopMovies />} />
           <Route path="/Popular" element={<PopularMovies />} />
           <Route path="/Upcoming" element={<Upcoming />} />
           <Route path="/movie/:id" element={<MovieDetail />} />
+          <Route path="/tv/:id" element={<TVDetail />} />
           <Route path='/watchlist' element={<Watchlist />} />
           <Route path="/person/:personId" element={<PersonDetails />} />
         </Routes>

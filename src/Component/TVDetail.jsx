@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import {
-  getMovieDetails,
-  getMovieTrailers,
-  getMovieImages,
-  getMovieCredits,
-  getMovieRecommendations,
-} from "../lib/fetch";
+  getTVDetails,
+  getTVTrailers,
+  getTVImages,
+  getTVCredits,
+  getTVRecommendations,
+} from "../lib/tvfetch";
 import Modal from "./Modal";
 import { addToWatchlist, removeFromWatchlist } from "../lib/indexedDB";
 
 const placeholderImage = 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-4-user-grey-d8fe957375e70239d6abdd549fd7568c89281b2179b5f4470e2e12895792dfa5.svg';
 
-function MovieDetail() {
+function TVDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [movie, setMovie] = useState(null);
+  const [tv, setTV] = useState(null);
   const [trailer, setTrailer] = useState(null);
   const [images, setImages] = useState([]);
   const [videos, setVideos] = useState([]);
@@ -28,7 +28,7 @@ function MovieDetail() {
   const [recommendations, setRecommendations] = useState([]);
   const [activeMedia, setActiveMedia] = useState("photos");
 
-  const checkIfInWatchlist = async (movieId) => {
+  const checkIfInWatchlist = async (tvId) => {
     return new Promise((resolve, reject) => {
       const request = window.indexedDB.open("watchlist_db", 1);
 
@@ -36,7 +36,7 @@ function MovieDetail() {
         const db = event.target.result;
         const transaction = db.transaction(["watchlist"], "readonly");
         const objectStore = transaction.objectStore("watchlist");
-        const getRequest = objectStore.get(movieId);
+        const getRequest = objectStore.get(tvId);
 
         getRequest.onsuccess = () => {
           resolve(getRequest.result !== undefined);
@@ -60,10 +60,10 @@ function MovieDetail() {
   const handleSaveToWatchlist = async () => {
     try {
       if (isInWatchlist) {
-        await removeFromWatchlist(movie.id);
+        await removeFromWatchlist(tv.id);
         setIsInWatchlist(false);
       } else {
-        await addToWatchlist(movie);
+        await addToWatchlist(tv);
         setIsInWatchlist(true);
       }
     } catch (error) {
@@ -74,17 +74,17 @@ function MovieDetail() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const movieData = await getMovieDetails(id);
-        const trailerData = await getMovieTrailers(id);
-        const imagesData = await getMovieImages(id);
-        const creditsData = await getMovieCredits(id);
-        const recommendationsData = await getMovieRecommendations(id);
+        const tvData = await getTVDetails(id);
+        const trailerData = await getTVTrailers(id);
+        const imagesData = await getTVImages(id);
+        const creditsData = await getTVCredits(id);
+        const recommendationsData = await getTVRecommendations(id);
 
-        if (!movieData || !trailerData || !imagesData || !creditsData || !recommendationsData) {
-          throw new Error("Failed to fetch movie details, trailer, images, credits or recommendations");
+        if (!tvData || !trailerData || !imagesData || !creditsData || !recommendationsData) {
+          throw new Error("Failed to fetch TV details, trailer, images, credits or recommendations");
         }
 
-        setMovie(movieData);
+        setTV(tvData);
         const trailer = trailerData.results.find(
           (video) => video.type === "Trailer" && video.site === "YouTube"
         );
@@ -113,9 +113,9 @@ function MovieDetail() {
     setShowAllImages(true);
   };
 
-  const handleRecommendationClick = (movieId) => {
+  const handleRecommendationClick = (tvId) => {
     setLoading(true);
-    navigate(`/movie/${movieId}`);
+    navigate(`/tv/${tvId}`);
   };
 
   const handleMediaSwitch = (type) => {
@@ -140,8 +140,8 @@ function MovieDetail() {
         <div className="movie-container">
           <div className="poster-container" onClick={handlePlayTrailer}>
             <img
-              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-              alt={movie.title}
+              src={`https://image.tmdb.org/t/p/w500${tv.poster_path}`}
+              alt={tv.name}
             />
             <div className="play-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-play-circle" viewBox="0 0 16 16">
@@ -151,12 +151,12 @@ function MovieDetail() {
             </div>
           </div>
           <div className="movie-info">
-            <h2>{movie.title}</h2><br />
+            <h2>{tv.name}</h2><br />
             <h3>📽️ OVER VIEW</h3>
-            <p>{movie.overview}</p><br />
-            <p>⭐ Rating: {movie.vote_average}</p><br />
-            <p>📅 Release Date: {movie.release_date}</p><br />
-            <p>🔤 Language : {movie.original_language}</p>
+            <p>{tv.overview}</p><br />
+            <p>⭐ Rating: {tv.vote_average}</p><br />
+            <p>📅 First Air Date: {tv.first_air_date}</p><br />
+            <p>🔤 Language : {tv.original_language}</p>
             <div className="movie-button">
               <label className="bookmark" htmlFor="checkboxInput">
                 <input id="checkboxInput" type="checkbox" onClick={handleSaveToWatchlist} />
@@ -214,7 +214,7 @@ function MovieDetail() {
                   className="media-image"
                   key={image.file_path}
                   src={`https://image.tmdb.org/t/p/w500${image.file_path}`}
-                  alt="Movie backdrop"
+                  alt="TV backdrop"
                 />
               ))}
               {!showAllImages && images.length > 4 && (
@@ -271,9 +271,9 @@ function MovieDetail() {
           >
             <img
               src={`https://image.tmdb.org/t/p/w200${rec.poster_path}`}
-              alt={rec.title}
+              alt={rec.name}
             />
-            <p>{rec.title}</p>
+            <p>{rec.name}</p>
           </div>
         ))}
       </div>
@@ -281,4 +281,4 @@ function MovieDetail() {
   );
 }
 
-export default MovieDetail;
+export default TVDetail;
