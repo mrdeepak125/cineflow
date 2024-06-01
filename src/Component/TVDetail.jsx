@@ -134,6 +134,11 @@ function TVDetail() {
     return <div>{error}</div>;
   }
 
+  const handleOpenStreamLink = () => {
+    const streamUrl = ``;//stream url
+    window.open(streamUrl);
+  };
+
   return (
     <>
       <div className="movie-detail">
@@ -178,6 +183,16 @@ function TVDetail() {
                 <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="15px">
                   <path d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z" fill="currentColor"></path>
                 </svg> 
+              </button>
+              <button className="Play-movie" onClick={handleOpenStreamLink}>
+                  <span className="circle1" />
+                  <span className="circle2" />
+                  <span className="circle3" />
+                  <span className="circle4" />
+                  <span className="circle5" />
+                  <span className="text">
+                    Watch Online
+                  </span>
               </button>
             </div>
           </div>

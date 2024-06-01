@@ -199,9 +199,9 @@ function Navbar({ updateSearchResults }) {
         </div>
       </nav>
       <div className='movie-bar'>
-        <button onClick={handleUpcomingMovies}>Up Coming</button>
-        <button onClick={handleTopMovies}>Top Movie</button>
-        <button onClick={handlePopularMovies}>Popular</button>
+        <Link to="/Upcoming">Up Coming</Link>
+        <Link to="/TopMovies">Top Movie</Link>
+        <Link to="/Popular">Popular</Link>
       </div>
     </>
   );
