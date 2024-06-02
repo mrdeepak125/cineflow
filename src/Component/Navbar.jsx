@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -69,68 +69,13 @@ function Navbar({ updateSearchResults }) {
     }
   };
 
-  const handleTopMovies = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await axios.get(`${BASE_URL}/top_rated`, {
-        params: { api_key: API_KEY },
-      });
-      if (response.data.results) {
-        updateSearchResults(response.data.results);
-        navigate('/TopMovies');
-      } else {
-        setError('No top movies found');
-      }
-    } catch (e) {
-      setError('Error fetching top movies: ' + e.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handlePopularMovies = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await axios.get(`${BASE_URL}/popular`, {
-        params: { api_key: API_KEY },
-      });
-      if (response.data.results) {
-        updateSearchResults(response.data.results);
-        navigate('/Popular');
-      } else {
-        setError('No popular movies found');
-      }
-    } catch (e) {
-      setError('Error fetching popular movies: ' + e.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleUpcomingMovies = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await axios.get(`${BASE_URL}/upcoming`, {
-        params: { api_key: API_KEY },
-      });
-      if (response.data.results) {
-        updateSearchResults(response.data.results);
-        navigate('/Upcoming');
-      } else {
-        setError('No upcoming movies found');
-      }
-    } catch (e) {
-      setError('Error fetching upcoming movies: ' + e.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (loading) {
+    return (
+      <div className="spinner-container">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -151,29 +96,29 @@ function Navbar({ updateSearchResults }) {
             <li className='second-section'>
               <Link to="/TopMovies" onClick={toggleMenu}>Top Movies</Link>
               <Link to="/Popular" onClick={toggleMenu}>Popular</Link>
-              <Link to="/Upcoming" onClick={toggleMenu}>Up Coming</Link>
+              <Link to="/Upcoming" onClick={toggleMenu}>Upcoming</Link>
             </li>
           </ul>
           <ul>
             <li className='third-section'>
-            <Link to="/Tvlist" onClick={toggleMenu}>TV</Link>
+              <Link to="/Tvlist" onClick={toggleMenu}>TV</Link>
             </li>
           </ul>  
           <ul>
-            <li className='four-section'>
+            <li className='fourth-section'>
               <label className="ui-switch">
-            <input type="checkbox" checked={darkMode} onChange={toggleDarkMode} />
-            <div className="slider">
-              <div className="circle" />
-            </div>
-          </label>
+                <input type="checkbox" checked={darkMode} onChange={toggleDarkMode} />
+                <div className="slider">
+                  <div className="circle" />
+                </div>
+              </label>
             </li>
           </ul>       
         </div>
         <div className="navbar-menu">
           <Link to="/" >Home</Link>
           <Link to="/watchlist" >Watch List</Link>
-          <Link to="/Tvlist" >Tv List</Link>
+          <Link to="/Tvlist" >TV List</Link>
         </div>
         <div className="navbar-search">
           <input
@@ -199,8 +144,8 @@ function Navbar({ updateSearchResults }) {
         </div>
       </nav>
       <div className='movie-bar'>
-        <Link to="/Upcoming">Up Coming</Link>
-        <Link to="/TopMovies">Top Movie</Link>
+        <Link to="/Upcoming">Upcoming</Link>
+        <Link to="/TopMovies">Top Movies</Link>
         <Link to="/Popular">Popular</Link>
       </div>
     </>

@@ -1,58 +1,91 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 
-const placeholderImage = 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg';
+function SearchResults({ searchResults, query }) {
+  const { movies = [], tvShows = [] } = searchResults;
+  const placeholderImage = 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg';
 
-function SearchResults({ searchResults }) {
-  const { movies, tvShows } = searchResults;
+  const [visibleMovies, setVisibleMovies] = useState(5);
+  const [visibleTvShows, setVisibleTvShows] = useState(5);
+
+  useEffect(() => {
+    console.log('Search results updated:', searchResults);
+  }, [searchResults]);
+
+  const handleShowMoreMovies = () => {
+    setVisibleMovies(prevVisibleMovies => prevVisibleMovies + 5);
+  };
+
+  const handleShowMoreTvShows = () => {
+    setVisibleTvShows(prevVisibleTvShows => prevVisibleTvShows + 5);
+  };
+
+  const noResults = movies.length === 0 && tvShows.length === 0;
 
   return (
     <div className="container">
-      <div className="section">
-        <h1 className="section-title">🔎 Movie Results</h1>
-        <div className="movie-list">
-          {movies.length > 0 ? (
-            movies.map((movie) => (
-              <div className="movie-card" key={movie.id}>
-                <Link to={`/movie/${movie.id}`}>
-                  <img
-                    src={movie.poster_path
-                      ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
-                      : placeholderImage}
-                    alt={movie.title}
-                  />
-                </Link>
-                <h4>{movie.title}</h4>
+      {!noResults && (
+        <>
+          <div className="section">
+            <h1 className="section-title">🔎 Movie Results "{query}"</h1>
+            <div className="movie-list">
+              {movies.slice(0, visibleMovies).map((movie) => (
+                <div className="movie-card" key={movie.id}>
+                  <Link to={`/movie/${movie.id}`}>
+                    <img
+                      src={movie.poster_path
+                        ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
+                        : placeholderImage}
+                      alt={movie.title}
+                      style={{ width: "200px", height: "300px" }}
+                    />
+                  </Link>
+                  <h4>{movie.title}</h4>
+                </div>
+              ))}
+            </div>
+            {visibleMovies < movies.length && (
+              <div className="show-load">
+                <div className="show-more">
+                  <button onClick={handleShowMoreMovies}>Show More</button>
+                </div>
               </div>
-            ))
-          ) : (
-            <div>No movies available</div>
-          )}
-        </div>
-      </div>
+            )}
+          </div>
 
-      <div className="section">
-        <h1 className="section-title">📺 TV Show Results</h1>
-        <div className="movie-list">
-          {tvShows.length > 0 ? (
-            tvShows.map((tvShow) => (
-              <div className="movie-card" key={tvShow.id}>
-                <Link to={`/tv/${tvShow.id}`}>
-                  <img
-                    src={tvShow.poster_path
-                      ? `https://image.tmdb.org/t/p/w200${tvShow.poster_path}`
-                      : placeholderImage}
-                    alt={tvShow.name}
-                  />
-                </Link>
-                <h4>{tvShow.name}</h4>
+          <div className="section">
+            <h1 className="section-title">📺 TV Show Results "{query}"</h1>
+            <div className="movie-list">
+              {tvShows.slice(0, visibleTvShows).map((tvShow) => (
+                <div className="movie-card" key={tvShow.id}>
+                  <Link to={`/tv/${tvShow.id}`}>
+                    <img
+                      src={tvShow.poster_path
+                        ? `https://image.tmdb.org/t/p/w200${tvShow.poster_path}`
+                        : placeholderImage}
+                      alt={tvShow.name}
+                      style={{ width: "200px", height: "300px" }}
+                    />
+                  </Link>
+                  <h4>{tvShow.name}</h4>
+                </div>
+              ))}
+            </div>
+            {visibleTvShows < tvShows.length && (
+              <div className="show-load">
+                <div className="show-more">
+                  <button onClick={handleShowMoreTvShows}>Show More</button>
+                </div>
               </div>
-            ))
-          ) : (
-            <div>No TV shows available</div>
-          )}
+            )}
+          </div>
+        </>
+      )}
+      {noResults && (
+        <div className="no-results">
+          <h2>No results available</h2>
         </div>
-      </div>
+      )}
     </div>
   );
 }

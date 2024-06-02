@@ -52,3 +52,11 @@ export const getTVRecommendations = async (id) => {
   const response = await axios.get(`${BASE_URL}/tv/${id}/recommendations?api_key=${API_KEY}`);
   return response.data;
 };
+
+export const getSeasonDetails = async (seriesId, seasonNumber) => {
+  const response = await fetch(`https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNumber}?api_key=${API_KEY}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch season details');
+  }
+  return response.json();
+};

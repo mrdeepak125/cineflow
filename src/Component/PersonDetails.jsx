@@ -52,12 +52,12 @@ const PersonDetails = () => {
 
   return (
     <div className="container">
+                {loading }
       <div className="section">
         <div className="person-details">
           <img 
             src={personDetails.profile_path ? `https://image.tmdb.org/t/p/w300${personDetails.profile_path}` : 'https://via.placeholder.com/300x450'}
             alt={personDetails.name}
-            // style={{ width: "300px", height: "450px" }}
           />
           <div className="person-info">
         <h1 className="section-title">{personDetails.name}</h1>
@@ -68,39 +68,39 @@ const PersonDetails = () => {
           </div>
         </div>
         <div className="movie-credits">
-          <h1>🎬 Movie Credits</h1>
-          <div className="recommendations-list">
-            {movieCredits.map((movie) => (
-              <div className="movie-card" key={movie.id}>
-                <Link to={`/movie/${movie.id}`}>
-                  <img
-                    src={movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg'}
-                    alt={movie.title}
-                  />
-                </Link>
-                <h4>{movie.title}</h4>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="movie-credits">
-          <h1>📺 TV Credits</h1>
-          <div className="recommendations-list">
-            {tvCredits.map((tvShow) => (
-              <div className="movie-card" key={tvShow.id}>
-                <Link to={`/tv/${tvShow.id}`}>
-                  <img
-                    src={tvShow.poster_path ? `https://image.tmdb.org/t/p/w200${tvShow.poster_path}` : 'https://via.placeholder.com/200x300'}
-                    alt={tvShow.name}
-                  />
-                </Link>
-                <h4>{tvShow.name}</h4>
-              </div>
-            ))}
-          </div>
-        </div>
+  <h1>🎬 Movie Credits</h1>
+  <div className="recommendations-list">
+    {movieCredits.map((movie, index) => (
+      <div className="movie-card" key={`movie-${movie.id}-${index}`}>
+        <Link to={`/movie/${movie.id}`}>
+          <img
+            src={movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg'}
+            alt={movie.title}
+          />
+        </Link>
+        <h4>{movie.title}</h4>
       </div>
-    </div>
+    ))}
+  </div>
+</div>
+<div className="movie-credits">
+  <h1>📺 TV Credits</h1>
+  <div className="recommendations-list">
+    {tvCredits.map((tvShow, index) => (
+      <div className="movie-card" key={`tv-${tvShow.id}-${index}`}>
+        <Link to={`/tv/${tvShow.id}`}>
+          <img
+            src={tvShow.poster_path ? `https://image.tmdb.org/t/p/w200${tvShow.poster_path}` : 'https://via.placeholder.com/200x300'}
+            alt={tvShow.name}
+          />
+        </Link>
+        <h4>{tvShow.name}</h4>
+      </div>
+    ))}
+  </div>
+</div>
+</div>
+</div>
   );
 };
 

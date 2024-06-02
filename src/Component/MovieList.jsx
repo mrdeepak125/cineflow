@@ -14,7 +14,9 @@ const Latest = () => {
       const response = await axios.get(
         `https://api.themoviedb.org/3/movie/now_playing?language=en-US&api_key=7607c1248159387aca334387ac63e608&page=${page}`
       );
-      setLatestMovies((prevMovies) => [...prevMovies, ...response.data.results]);
+      // Use a Set to ensure that each movie is only added once
+      const uniqueMovies = new Set([...latestMovies, ...response.data.results]);
+      setLatestMovies(Array.from(uniqueMovies));
       setLoading(false);
     } catch (err) {
       setError(err.message);
@@ -66,12 +68,12 @@ const Latest = () => {
           </div>
         )}
         <div className="show-load">
-        <div className="show-more">
-          <button onClick={handleShowMore} disabled={loading}>
-            {loading ? "Loading..." : "Show More"}
-          </button>
+          <div className="show-more">
+            <button onClick={handleShowMore} disabled={loading}>
+              {loading ? 'Loading...' : 'Show More'}
+            </button>
+          </div>
         </div>
-      </div>
       </div>
     </div>
   );

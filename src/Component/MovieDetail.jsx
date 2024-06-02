@@ -11,6 +11,7 @@ import Modal from "./Modal";
 import { addToWatchlist, removeFromWatchlist } from "../lib/indexedDB";
 
 const placeholderImage = 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-4-user-grey-d8fe957375e70239d6abdd549fd7568c89281b2179b5f4470e2e12895792dfa5.svg';
+const placeholderTvImage = 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg';
 
 function MovieDetail() {
   const { id } = useParams();
@@ -27,35 +28,7 @@ function MovieDetail() {
   const [cast, setCast] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
   const [activeMedia, setActiveMedia] = useState("photos");
-
-  const checkIfInWatchlist = async (movieId) => {
-    return new Promise((resolve, reject) => {
-      const request = window.indexedDB.open("watchlist_db", 1);
-
-      request.onsuccess = (event) => {
-        const db = event.target.result;
-        const transaction = db.transaction(["watchlist"], "readonly");
-        const objectStore = transaction.objectStore("watchlist");
-        const getRequest = objectStore.get(movieId);
-
-        getRequest.onsuccess = () => {
-          resolve(getRequest.result !== undefined);
-        };
-
-        getRequest.onerror = (error) => {
-          reject(error);
-        };
-
-        transaction.oncomplete = () => {
-          db.close();
-        };
-      };
-
-      request.onerror = (event) => {
-        reject("Error opening database");
-      };
-    });
-  };
+  const [selectedServer, setSelectedServer] = useState("server1");
 
   const handleSaveToWatchlist = async () => {
     try {
@@ -113,10 +86,10 @@ function MovieDetail() {
     setShowAllImages(true);
   };
 
-  const handleRecommendationClick = (movieId) => {
-    setLoading(true);
-    navigate(`/movie/${movieId}`);
-  };
+  // const handleRecommendationClick = (movieId) => {
+  //   setLoading(true);
+  //   navigate(`/movie/${movieId}`);
+  // };
 
   const handleMediaSwitch = (type) => {
     setActiveMedia(type);
@@ -134,10 +107,7 @@ function MovieDetail() {
     return <div>{error}</div>;
   }
 
-  const handleOpenStreamLink = () => {
-    const streamUrl = `strem url`;//stream url link
-    window.open(streamUrl);
-  };
+  
 
   return (
     <>
@@ -184,6 +154,17 @@ function MovieDetail() {
                   <path d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z" fill="currentColor"></path>
                 </svg> 
               </button>
+              <div className="server-dropdown">
+                <select
+                  value={selectedServer}
+                  onChange={(e) => setSelectedServer(e.target.value)}
+                >
+                  <option value="server1">Server 1 </option>
+                  <option value="server2">Server 2</option>
+                  <option value="server3">Server 3</option>
+                  <option value="server4">Server 4</option>
+                </select>
+              </div>
               <button className="Play-movie" onClick={handleOpenStreamLink}>
                   <span className="circle1" />
                   <span className="circle2" />
@@ -260,7 +241,7 @@ function MovieDetail() {
       <h1>Top Billed Cast</h1>
       <div className="cast-list">
         {cast.slice(0, 100).map((member) => (
-            <div className="cast-member">
+            <div className="cast-member" key={member.id}>
           <Link to={`/person/${member.id}`} key={member.id}>
               <img
                 src={member.profile_path
@@ -277,20 +258,25 @@ function MovieDetail() {
         ))}
       </div>
       <h1>Recommendations</h1>
+      <div className="section">
       <div className="recommendations-list">
         {recommendations.map((rec) => (
           <div
             className="movie-card"
             key={rec.id}
-            onClick={() => handleRecommendationClick(rec.id)}
+            // onClick={() => handleRecommendationClick(rec.id)}
           >
-            <img
-              src={`https://image.tmdb.org/t/p/w200${rec.poster_path}`}
-              alt={rec.title}
-            />
+            <Link to={`/movie/${rec.id}`} key={rec.id}>
+              <img
+                src={rec.poster_path ? `https://image.tmdb.org/t/p/w200${rec.poster_path}`: placeholderTvImage}
+                alt={rec.title}
+                style={{ width: "200px", height: "300px" }}
+              />
+            </Link>
             <p>{rec.title}</p>
           </div>
         ))}
+      </div>
       </div>
     </>
   );
