@@ -51,9 +51,10 @@ function Navbar({ updateSearchResults }) {
       const tvShows = tvResponse.data.results || [];
 
       if (movies.length || tvShows.length) {
-        updateSearchResults({ movies, tvShows });
+        updateSearchResults({ movies, tvShows, query });
         navigate('/search');
       } else {
+        updateSearchResults({ movies: [], tvShows: [], query });
         setError('No movies or TV shows found');
       }
     } catch (e) {
@@ -68,14 +69,6 @@ function Navbar({ updateSearchResults }) {
       handleSearch(e);
     }
   };
-
-  if (loading) {
-    return (
-      <div className="spinner-container">
-        <div className="spinner"></div>
-      </div>
-    );
-  }
 
   return (
     <>

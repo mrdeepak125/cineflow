@@ -12,6 +12,7 @@ import Upcoming from './Component/Upcoming';
 import PersonDetails from "./Component/PersonDetails";
 import TVDetail from "./Component/TVDetail";
 import TvList from './Component/TvList';
+import DownloadPage from './Component/DownloadPage'; // Corrected import path
 
 function App() {
   const [searchResults, setSearchResults] = useState({ movies: [], tvShows: [], query: '' });
@@ -29,6 +30,7 @@ function App() {
           <Route path="/Popular" element={<PopularMovies />} />
           <Route path="/Upcoming" element={<Upcoming />} />
           <Route path="/movie/:id" element={<MovieDetail />} />
+          <Route path="/downloadpage" element={<DownloadPage />} />
           <Route path="/tv/:id" element={<TVDetail />} />
           <Route path='/watchlist' element={<Watchlist />} />
           <Route path="/person/:personId" element={<PersonDetails />} />

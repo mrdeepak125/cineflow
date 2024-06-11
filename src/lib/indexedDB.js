@@ -1,61 +1,123 @@
-// indexedDB.js
-
-const dbName = 'watchlistDB';
+const movieDBName = 'movieWatchlistDB';
+const tvDBName = 'tvWatchlistDB';
 const dbVersion = 1;
-let db;
 
-const openDB = () => {
+let movieDb, tvDb;
+
+const openMovieDB = () => {
   return new Promise((resolve, reject) => {
-    const request = window.indexedDB.open(dbName, dbVersion);
+    const request = window.indexedDB.open(movieDBName, dbVersion);
 
     request.onerror = (event) => {
-      console.error('Error opening indexedDB', event.target.error);
+      console.error('Error opening movie indexedDB', event.target.error);
       reject(event.target.error);
     };
 
     request.onsuccess = (event) => {
-      db = event.target.result;
-      resolve(db);
+      movieDb = event.target.result;
+      resolve(movieDb);
     };
 
     request.onupgradeneeded = (event) => {
       const db = event.target.result;
-      const store = db.createObjectStore('watchlist', { keyPath: 'id' });
+      db.createObjectStore('watchlist', { keyPath: 'id' });
     };
   });
 };
 
-export const addToWatchlist = (movie) => {
-  openDB().then((database) => {
+const openTvDB = () => {
+  return new Promise((resolve, reject) => {
+    const request = window.indexedDB.open(tvDBName, dbVersion);
+
+    request.onerror = (event) => {
+      console.error('Error opening tv indexedDB', event.target.error);
+      reject(event.target.error);
+    };
+
+    request.onsuccess = (event) => {
+      tvDb = event.target.result;
+      resolve(tvDb);
+    };
+
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      db.createObjectStore('watchlist', { keyPath: 'id' });
+    };
+  });
+};
+
+export const addToMovieWatchlist = (movie) => {
+  openMovieDB().then((database) => {
     const transaction = database.transaction(['watchlist'], 'readwrite');
     const store = transaction.objectStore('watchlist');
     store.add(movie);
   });
 };
 
-export const removeFromWatchlist = (movieId) => {
-  openDB().then((database) => {
+export const removeFromMovieWatchlist = (movieId) => {
+  openMovieDB().then((database) => {
     const transaction = database.transaction(['watchlist'], 'readwrite');
     const store = transaction.objectStore('watchlist');
     store.delete(movieId);
   });
 };
 
-export const getAllWatchlistItems = () => {
+export const getAllMovieWatchlistItems = () => {
   return new Promise((resolve, reject) => {
-    openDB().then((database) => {
+    openMovieDB().then((database) => {
       const transaction = database.transaction(['watchlist'], 'readonly');
       const store = transaction.objectStore('watchlist');
       const request = store.getAll();
 
       request.onerror = (event) => {
-        console.error('Error getting watchlist items', event.target.error);
+        console.error('Error getting movie watchlist items', event.target.error);
         reject(event.target.error);
       };
 
       request.onsuccess = (event) => {
         resolve(event.target.result);
       };
-    }).catch(reject);
+    }).catch((error) => {
+      console.error('Error opening movie database', error);
+      reject(error);
+    });
+  });
+};
+
+export const addToTvWatchlist = (tv) => {
+  openTvDB().then((database) => {
+    const transaction = database.transaction(['watchlist'], 'readwrite');
+    const store = transaction.objectStore('watchlist');
+    store.add(tv);
+  });
+};
+
+export const removeFromTvWatchlist = (tvId) => {
+  openTvDB().then((database) => {
+    const transaction = database.transaction(['watchlist'], 'readwrite');
+    const store = transaction.objectStore('watchlist');
+    store.delete(tvId);
+  });
+};
+
+export const getAllTvWatchlistItems = () => {
+  return new Promise((resolve, reject) => {
+    openTvDB().then((database) => {
+      const transaction = database.transaction(['watchlist'], 'readonly');
+      const store = transaction.objectStore('watchlist');
+      const request = store.getAll();
+
+      request.onerror = (event) => {
+        console.error('Error getting tv watchlist items', event.target.error);
+        reject(event.target.error);
+      };
+
+      request.onsuccess = (event) => {
+        resolve(event.target.result);
+      };
+    }).catch((error) => {
+      console.error('Error opening tv database', error);
+      reject(error);
+    });
   });
 };

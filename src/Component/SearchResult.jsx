@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
-
+import errro from '../assets/9318688-removebg-preview.png'
 function SearchResults({ searchResults, query }) {
   const { movies = [], tvShows = [] } = searchResults;
   const placeholderImage = 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg';
@@ -9,15 +9,15 @@ function SearchResults({ searchResults, query }) {
   const [visibleTvShows, setVisibleTvShows] = useState(5);
 
   useEffect(() => {
-    console.log('Search results updated:', searchResults);
+    // console.log('Search results updated:', searchResults);
   }, [searchResults]);
 
   const handleShowMoreMovies = () => {
-    setVisibleMovies(prevVisibleMovies => prevVisibleMovies + 5);
+    setVisibleMovies(prevVisibleMovies => prevVisibleMovies + 25);
   };
 
   const handleShowMoreTvShows = () => {
-    setVisibleTvShows(prevVisibleTvShows => prevVisibleTvShows + 5);
+    setVisibleTvShows(prevVisibleTvShows => prevVisibleTvShows + 25);
   };
 
   const noResults = movies.length === 0 && tvShows.length === 0;
@@ -83,7 +83,8 @@ function SearchResults({ searchResults, query }) {
       )}
       {noResults && (
         <div className="no-results">
-          <h2>No results available</h2>
+          <h1>No results available</h1>
+          <img src={errro} alt="" srcset="" />
         </div>
       )}
     </div>

@@ -9,7 +9,7 @@ import {
   getSeasonDetails, // New function to get episodes of a season
 } from "../lib/tvfetch";
 import Modal from "./Modal";
-import { addToWatchlist, removeFromWatchlist } from "../lib/indexedDB";
+import { addToTvWatchlist, removeFromTvWatchlist } from "../lib/indexedDB";
 const placeholderTvImage = 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg';
 const placeholderImage = 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-4-user-grey-d8fe957375e70239d6abdd549fd7568c89281b2179b5f4470e2e12895792dfa5.svg';
 
@@ -32,6 +32,10 @@ function TVDetail() {
   const [episodes, setEpisodes] = useState([]); // New state for episodes
   const [selectedSeason, setSelectedSeason] = useState(season_number || 1); // New state for selected season
 
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to top when the component mounts
+  }, []);
+  
   const checkIfInWatchlist = async (tvId) => {
     return new Promise((resolve, reject) => {
       const request = window.indexedDB.open("watchlist_db", 1);
@@ -64,10 +68,10 @@ function TVDetail() {
   const handleSaveToWatchlist = async () => {
     try {
       if (isInWatchlist) {
-        await removeFromWatchlist(tv.id);
+        await removeFromTvWatchlist(tv.id);
         setIsInWatchlist(false);
       } else {
-        await addToWatchlist(tv);
+        await addToTvWatchlist(tv);
         setIsInWatchlist(true);
       }
     } catch (error) {
@@ -140,7 +144,9 @@ function TVDetail() {
     setActiveMedia(type);
   };
 
-  
+  const handleOpenStreamLink = (episodeNum) => {
+
+  };
 
   const  handleSeasonChange = (seasonNum) => {
     setSelectedSeason(seasonNum);

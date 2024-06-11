@@ -8,7 +8,7 @@ import {
   getMovieRecommendations,
 } from "../lib/fetch";
 import Modal from "./Modal";
-import { addToWatchlist, removeFromWatchlist } from "../lib/indexedDB";
+import { addToMovieWatchlist, removeFromMovieWatchlist } from "../lib/indexedDB";
 
 const placeholderImage = 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-4-user-grey-d8fe957375e70239d6abdd549fd7568c89281b2179b5f4470e2e12895792dfa5.svg';
 const placeholderTvImage = 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg';
@@ -33,16 +33,20 @@ function MovieDetail() {
   const handleSaveToWatchlist = async () => {
     try {
       if (isInWatchlist) {
-        await removeFromWatchlist(movie.id);
+        await removeFromMovieWatchlist(movie.id);
         setIsInWatchlist(false);
       } else {
-        await addToWatchlist(movie);
+        await addToMovieWatchlist(movie);
         setIsInWatchlist(true);
       }
     } catch (error) {
       console.error("Error saving to watchlist:", error);
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,11 +90,6 @@ function MovieDetail() {
     setShowAllImages(true);
   };
 
-  // const handleRecommendationClick = (movieId) => {
-  //   setLoading(true);
-  //   navigate(`/movie/${movieId}`);
-  // };
-
   const handleMediaSwitch = (type) => {
     setActiveMedia(type);
   };
@@ -107,7 +106,9 @@ function MovieDetail() {
     return <div>{error}</div>;
   }
 
-  
+  const handleOpenStreamLink = () => {
+
+  };
 
   return (
     <>
@@ -175,6 +176,9 @@ function MovieDetail() {
                     Watch Online
                   </span>
               </button>
+              {/* <Link to={`/downloadpage?q=${movie.title}`} className="download-button">
+                Download Movie
+              </Link> */}
             </div>
           </div>
         </div>
