@@ -56,7 +56,7 @@ const Upcoming = () => {
                   // style={{ width: "150px", height: "225px" }}
                 />
               </Link>
-              <h4 >{movie.title}</h4>
+              <h5>{movie.title}</h5>
               <p>{movie.release_date}</p>
             </div>
           ))}

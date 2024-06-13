@@ -55,7 +55,7 @@ const TvList = () => {
                   alt={show.name}
                 />
               </Link>
-              <h4>{show.name}</h4>
+              <h3>{show.name}</h3>
             </div>
           ))}
         </div>

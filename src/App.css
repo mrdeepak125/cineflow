@@ -1458,7 +1458,8 @@ h4{
   fill: black;
 }
 /* text */
-.text {
+.text1
+ {
   position: absolute;
   right: 0%;
   width: 0%;
@@ -1468,7 +1469,7 @@ h4{
   font-weight: 600;
   transition-duration: 0.3s;
 }
-.text a{
+.text1 a{
   text-decoration: none;
   color: black;
 }

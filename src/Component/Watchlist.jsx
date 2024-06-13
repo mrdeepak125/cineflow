@@ -37,7 +37,7 @@ function Watchlist() {
             </svg>
             </div>
 
-            <div class="text">Go To Home</div>
+            <div class="text1">Go To Home</div>
           </button></a>
         </div>
       ) : (
