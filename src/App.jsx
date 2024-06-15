@@ -12,28 +12,35 @@ import Upcoming from './Component/Upcoming';
 import PersonDetails from "./Component/PersonDetails";
 import TVDetail from "./Component/TVDetail";
 import TvList from './Component/TvList';
-import DownloadPage from './Component/DownloadPage'; // Corrected import path
+import DownloadPage from './Component/DownloadPage';
+import WatchMovie from './Component/WatchMovie';
+import Anime from './Component/anime';
+import WatchTv from './Component/watchtv';
 
 function App() {
   const [searchResults, setSearchResults] = useState({ movies: [], tvShows: [], query: '' });
+  const [loading, setLoading] = useState(false);
 
   return (
     <Router>
       <div>
-        <Navbar updateSearchResults={(results) => setSearchResults(results)} />
+        <Navbar updateSearchResults={(results) => setSearchResults(results)} setLoading={setLoading} />
         
         <Routes>
           <Route path="/" element={<LatestMovies />} />
           <Route path="/Tvlist" element={<TvList />} />
-          <Route path="/search" element={<SearchResults searchResults={searchResults} query={searchResults.query} />} />
+          <Route path="/search" element={<SearchResults searchResults={searchResults} query={searchResults.query} loading={loading} />} />
           <Route path="/TopMovies" element={<TopMovies />} />
           <Route path="/Popular" element={<PopularMovies />} />
           <Route path="/Upcoming" element={<Upcoming />} />
           <Route path="/movie/:id" element={<MovieDetail />} />
           <Route path="/downloadpage" element={<DownloadPage />} />
           <Route path="/tv/:id" element={<TVDetail />} />
+          <Route path="/Anime" element={<Anime />} />
           <Route path='/watchlist' element={<Watchlist />} />
           <Route path="/person/:personId" element={<PersonDetails />} />
+          <Route path="/watchmovie/:id/:imdb_id" element={<WatchMovie />} />
+          <Route path="/watchtv/:title/:episode" element={<WatchTv tv={TVDetail}/>} />
         </Routes>
       </div>
     </Router>

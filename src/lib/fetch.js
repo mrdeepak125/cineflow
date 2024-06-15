@@ -146,3 +146,16 @@ export const getMovieCredits = async (movieId) => {
     }
   };
   
+  export const getMovieKeywords = async (movieId) => {
+    try {
+      const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/keywords?api_key=7607c1248159387aca334387ac63e608`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return await response.json();
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  };
+  

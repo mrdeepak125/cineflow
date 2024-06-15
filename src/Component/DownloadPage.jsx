@@ -59,6 +59,10 @@ const DownloadPage = ({ movie }) => { // Accept movie detail as prop
     return <div>Error: {error}</div>;
   }
 
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to top when the component mounts
+  }, []);
+
   return (
     <div>
       <h1>Download Page</h1>

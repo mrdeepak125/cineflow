@@ -82,7 +82,7 @@ const PersonDetails = () => {
             alt={movie.title}
           />
         </Link>
-        <h4>{movie.title}</h4>
+        <h4 className="movie-title">{movie.title}</h4>
       </div>
     ))}
   </div>

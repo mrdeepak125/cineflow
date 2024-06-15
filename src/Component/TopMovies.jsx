@@ -23,6 +23,10 @@ const TopRated = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to top when the component mounts
+  }, []);
+  
+  useEffect(() => {
     fetchTopRatedMovies(currentPage);
   }, [currentPage]);
 

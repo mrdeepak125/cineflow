@@ -13,7 +13,7 @@ import { addToTvWatchlist, removeFromTvWatchlist } from "../lib/indexedDB";
 const placeholderTvImage = 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg';
 const placeholderImage = 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-4-user-grey-d8fe957375e70239d6abdd549fd7568c89281b2179b5f4470e2e12895792dfa5.svg';
 
-function TVDetail() {
+function TVDetail({tvShow}) {
   const { id, season_number, episode_number } = useParams(); // Include season and episode from params
   const navigate = useNavigate();
   const [tv, setTV] = useState(null);
@@ -145,7 +145,13 @@ function TVDetail() {
   };
 
   const handleOpenStreamLink = (episodeNum) => {
+    const seasonNumber = selectedSeason;
+    const streamUrl =
+      selectedServer === "server1"
+        ? `https://vidsrc.me/embed/tv?tmdb=${tv.id}&season=${seasonNumber}&episode=${episodeNum}`
+        : `https://multiembed.mov/directstream.php?video_id=${tv.id}&tmdb=1&s=${seasonNumber}&e=${episodeNum}`;
 
+    window.location.href = streamUrl;
   };
 
   const  handleSeasonChange = (seasonNum) => {
@@ -163,6 +169,12 @@ function TVDetail() {
   if (error) {
     return <div>{error}</div>;
   }
+
+  const handleWatchOnline = () => {
+    const title = tv.name; // Adjust according to your tvShow object structure
+    const episode = 1; // Or get the specific episode number dynamically
+    navigate(`/watchtv/${title}/${episode}`);
+  };
 
   return (
     <>
@@ -216,7 +228,7 @@ function TVDetail() {
                   <option value="server2">Server 2</option>
                 </select>
               </div>
-              <button className="Play-movie" onClick={() => handleOpenStreamLink(1)}>
+              <button className="Play-movie" onClick={handleWatchOnline}>
                 <span className="circle1" />
                 <span className="circle2" />
                 <span className="circle3" />
@@ -227,6 +239,7 @@ function TVDetail() {
                 </span>
               </button>
             </div>
+            {/* <Link to={`/watchanime/${tv.id}/${tv.number_of_season}}`}>WatchAnime</Link> */}
           </div>
         </div>
         {showModal && (
@@ -279,6 +292,7 @@ function TVDetail() {
               </button>
           </div>
         ))}
+        
       </div>
       <div className="media-slider">
         <h1>Media</h1>

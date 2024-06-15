@@ -5,11 +5,10 @@ import axios from 'axios';
 const API_KEY = '7607c1248159387aca334387ac63e608';
 const BASE_URL = 'https://api.themoviedb.org/3/search';
 
-function Navbar({ updateSearchResults }) {
+function Navbar({ updateSearchResults, setLoading }) {
   const [query, setQuery] = useState('');
   const [darkMode, setDarkMode] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -36,8 +35,15 @@ function Navbar({ updateSearchResults }) {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError(null);
+
+    if (!query.trim()) {
+      updateSearchResults({ movies: [], tvShows: [], query });
+      navigate('/search');
+      return;
+    }
+
+    setLoading(true);
 
     try {
       const movieResponse = await axios.get(`${BASE_URL}/movie`, {
@@ -50,13 +56,8 @@ function Navbar({ updateSearchResults }) {
       const movies = movieResponse.data.results || [];
       const tvShows = tvResponse.data.results || [];
 
-      if (movies.length || tvShows.length) {
-        updateSearchResults({ movies, tvShows, query });
-        navigate('/search');
-      } else {
-        updateSearchResults({ movies: [], tvShows: [], query });
-        setError('No movies or TV shows found');
-      }
+      updateSearchResults({ movies, tvShows, query });
+      navigate('/search');
     } catch (e) {
       setError('Error fetching search results: ' + e.message);
     } finally {
@@ -112,6 +113,7 @@ function Navbar({ updateSearchResults }) {
           <Link to="/" >Home</Link>
           <Link to="/watchlist" >Watch List</Link>
           <Link to="/Tvlist" >TV List</Link>
+          <Link to="/Anime" >Anime</Link>
         </div>
         <div className="navbar-search">
           <input

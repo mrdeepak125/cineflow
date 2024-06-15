@@ -23,8 +23,14 @@ const Upcoming = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to top when the component mounts
+  }, []);
+  
+  useEffect(() => {
     fetchUpcomingMovies(currentPage);
   }, [currentPage]);
+
+
 
   const handleShowMore = () => {
     setCurrentPage((prevPage) => prevPage + 1);
@@ -56,7 +62,7 @@ const Upcoming = () => {
                   // style={{ width: "150px", height: "225px" }}
                 />
               </Link>
-              <h5>{movie.title}</h5>
+              <h5 className="movie-title">{movie.title}</h5>
               <p>{movie.release_date}</p>
             </div>
           ))}

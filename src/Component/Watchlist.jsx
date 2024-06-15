@@ -10,34 +10,41 @@ function Watchlist() {
   const [tvWatchlist, setTvWatchlist] = useState([]);
 
   useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to top when the component mounts
+  }, []);
+  
+  useEffect(() => {
     async function fetchWatchlist() {
       const movieItems = await getAllMovieWatchlistItems();
       const tvItems = await getAllTvWatchlistItems();
       setMovieWatchlist(movieItems);
+     
       setTvWatchlist(tvItems);
     }
     fetchWatchlist();
   }, []);
+
+
 
   const isMovieWatchlistEmpty = movieWatchlist.length === 0;
   const isTvWatchlistEmpty = tvWatchlist.length === 0;
 
   return (
     <div>
-      <h1>Watchlist</h1>
+      <h1 className='watchlist'>Watchlist</h1>
 
       {isMovieWatchlistEmpty && isTvWatchlistEmpty ? (
         <div className="no-results">
           <img src={WatchlistEmpty} alt="No items in watchlist" />
           <p>Your watchlist is empty. Add some movies and TV shows to get started!</p><br />
-          <a href="/"><button class="Btn">
-            <div class="sign">
+          <a href="/"><button className="Btn">
+            <div className="sign">
             <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 24 24">
             <path d="M12,2.1L1,12h3v9h7v-6h2v6h7v-9h3L12,2.1z M18,19h-3v-6H9v6H6v-8.8l6-5.4l6,5.4V19z"></path>
             </svg>
             </div>
 
-            <div class="text1">Go To Home</div>
+            <div className="text1">Go To Home</div>
           </button></a>
         </div>
       ) : (
