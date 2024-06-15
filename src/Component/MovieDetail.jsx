@@ -40,6 +40,10 @@ function MovieDetail() {
   const [keywords, setKeywords] = useState([]);
   const [loadingRecommendation, setLoadingRecommendation] = useState(false); // New loading state for recommendations
 
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to top when the component mounts
+  }, []);
+  
   // Function to fetch movie details
   const fetchMovieDetails = async () => {
     try {
@@ -160,10 +164,6 @@ function MovieDetail() {
   if (error) {
     return <div>{error}</div>;
   }
-
-  useEffect(() => {
-    window.scrollTo(0, 0); // Scroll to top when the component mounts
-  }, []);
 
   // Render UI
   return (

@@ -49,7 +49,18 @@ const WatchTv = ({ tv }) => {
   const episodeNum = tv.episodeNum || episode; // Use episode from URL params if not provided in tv object
 
   switch (selectedServer) {
-
+    case 'server1':
+      streamUrl = `https://2anime.xyz/embed/${title}-${episode}`;
+      break;
+    case 'server2':
+      streamUrl = `https://vidsrc.me/embed/tv?tmdb=${tv.id}&season=${seasonNumber}&episode=${episodeNum}`;
+      break;
+    case 'server3':
+      streamUrl = `https://multiembed.mov/directstream.php?video_id=${tv.id}&tmdb=1&s=${seasonNumber}&e=${episodeNum}`;
+      break;
+    default:
+      streamUrl = `https://2anime.xyz/embed/${title}-${episode}`;
+      break;
   }
 
   return (
