@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-const WatchTv = ({ tv }) => {
-  const { title, episode } = useParams(); // Assuming your URL now has these params
+const WatchTv = () => {
+  const { tvName, seasonNum, episodeNum, id } = useParams(); // Fetching params from the URL
   const navigate = useNavigate();
   const [selectedServer, setSelectedServer] = useState('server1');
 
@@ -15,21 +15,19 @@ const WatchTv = ({ tv }) => {
       const threshold = 100;
       const start = performance.now();
 
-      // Using console method interception
       const element = new Image();
       Object.defineProperty(element, 'id', {
         get: () => {
-          navigate(-1); // Navigate to the previous page
+          navigate(-1);
         }
       });
 
       console.log(element);
       console.clear();
 
-      // Using debugger statement detection
       const end = performance.now();
       if (end - start > threshold) {
-        navigate(-1); // Navigate to the previous page
+        navigate(-1);
       }
     };
 
@@ -38,30 +36,12 @@ const WatchTv = ({ tv }) => {
     return () => clearInterval(intervalId);
   }, [navigate]);
 
-  // Check if tv object is defined
-  if (!tv) {
-    return <div>Error: TV details not provided.</div>;
-  }
+  const formattedTvName = tvName.replace(/\s+/g, '-'); // Replace spaces with hyphens
 
   let streamUrl;
+  const seasonNumber = seasonNum; // Use the correct season number from params
 
-  const seasonNumber = tv.seasonNumber || 1; // Default to 1 if not provided
-  const episodeNum = tv.episodeNum || episode; // Use episode from URL params if not provided in tv object
 
-  switch (selectedServer) {
-    case 'server1':
-      streamUrl = `https://2anime.xyz/embed/${title}-${episode}`;
-      break;
-    case 'server2':
-      streamUrl = `https://vidsrc.me/embed/tv?tmdb=${tv.id}&season=${seasonNumber}&episode=${episodeNum}`;
-      break;
-    case 'server3':
-      streamUrl = `https://multiembed.mov/directstream.php?video_id=${tv.id}&tmdb=1&s=${seasonNumber}&e=${episodeNum}`;
-      break;
-    default:
-      streamUrl = `https://2anime.xyz/embed/${title}-${episode}`;
-      break;
-  }
 
   return (
     <div className='watch-movie-container'>
@@ -73,7 +53,7 @@ const WatchTv = ({ tv }) => {
         frameBorder="0"
         scrolling="no"
         allowFullScreen
-        title="Watch Movie"
+        title="Watch TV"
       />
       <div className="server-select">
         <button

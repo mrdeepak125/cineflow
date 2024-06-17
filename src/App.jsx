@@ -40,7 +40,7 @@ function App() {
           <Route path='/watchlist' element={<Watchlist />} />
           <Route path="/person/:personId" element={<PersonDetails />} />
           <Route path="/watchmovie/:id/:imdb_id" element={<WatchMovie />} />
-          <Route path="/watchtv/:title/:episode" element={<WatchTv tv={TVDetail}/>} />
+          <Route path="/watchtv/:tvName/:seasonNum/:episodeNum/:id" element={<WatchTv />} />
         </Routes>
       </div>
     </Router>

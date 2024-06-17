@@ -63,6 +63,7 @@ const Latest = () => {
     <div className="container">
       <div className="section">
         <h1 className="section-title">📅 Latest Movies</h1>
+        <h1 className="section-title">Top Movies to Watch in 2024</h1>
         <div className="movie-list">
           {latestMovies.map((movie) => (
             <div className="movie-card" key={movie.id} onClick={() => handleMovieClick(movie.id)}>

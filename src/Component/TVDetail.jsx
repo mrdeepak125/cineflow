@@ -13,7 +13,7 @@ import { addToTvWatchlist, removeFromTvWatchlist } from "../lib/indexedDB";
 const placeholderTvImage = 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg';
 const placeholderImage = 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-4-user-grey-d8fe957375e70239d6abdd549fd7568c89281b2179b5f4470e2e12895792dfa5.svg';
 
-function TVDetail({tvShow}) {
+function TVDetail({ tvShow }) {
   const { id, season_number, episode_number } = useParams(); // Include season and episode from params
   const navigate = useNavigate();
   const [tv, setTV] = useState(null);
@@ -35,7 +35,7 @@ function TVDetail({tvShow}) {
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to top when the component mounts
   }, []);
-  
+
   const checkIfInWatchlist = async (tvId) => {
     return new Promise((resolve, reject) => {
       const request = window.indexedDB.open("watchlist_db", 1);
@@ -144,17 +144,8 @@ function TVDetail({tvShow}) {
     setActiveMedia(type);
   };
 
-  const handleOpenStreamLink = (episodeNum) => {
-    const seasonNumber = selectedSeason;
-    const streamUrl =
-      selectedServer === "server1"
-        ? `https://vidsrc.me/embed/tv?tmdb=${tv.id}&season=${seasonNumber}&episode=${episodeNum}`
-        : `https://multiembed.mov/directstream.php?video_id=${tv.id}&tmdb=1&s=${seasonNumber}&e=${episodeNum}`;
 
-    window.location.href = streamUrl;
-  };
-
-  const  handleSeasonChange = (seasonNum) => {
+  const handleSeasonChange = (seasonNum) => {
     setSelectedSeason(seasonNum);
   };
 
@@ -170,11 +161,10 @@ function TVDetail({tvShow}) {
     return <div>{error}</div>;
   }
 
-  const handleWatchOnline = () => {
-    const title = tv.name; // Adjust according to your tvShow object structure
-    const episode = 1; // Or get the specific episode number dynamically
-    navigate(`/watchtv/${title}/${episode}`);
+  const handleWatchOnline = (episodeNum) => {
+    navigate(`/watchtv/${encodeURIComponent(tv.name)}/${selectedSeason}/${episodeNum}/${id}`);
   };
+
 
   return (
     <>
@@ -222,13 +212,13 @@ function TVDetail({tvShow}) {
                   <path d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z" fill="currentColor"></path>
                 </svg> 
               </button>
-              <div className="server-dropdown">
+              {/* <div className="server-dropdown">
                 <select value={selectedServer} onChange={(e) => setSelectedServer(e.target.value)}>
                   <option value="server1">Server 1</option>
                   <option value="server2">Server 2</option>
                 </select>
               </div>
-              <button className="Play-movie" onClick={handleWatchOnline}>
+              <button className="Play-movie" onClick={() => handleWatchOnline(episode_number)}>
                 <span className="circle1" />
                 <span className="circle2" />
                 <span className="circle3" />
@@ -237,7 +227,7 @@ function TVDetail({tvShow}) {
                 <span className="text">
                   Watch Online
                 </span>
-              </button>
+              </button> */}
             </div>
             {/* <Link to={`/watchanime/${tv.id}/${tv.number_of_season}}`}>WatchAnime</Link> */}
           </div>
@@ -267,33 +257,32 @@ function TVDetail({tvShow}) {
         </div>
       </div>
       <div className="episodes-list">
-        {episodes.map((episode) => (
-          <div className="episode-card" key={episode.id}>
-            <img
-              src={episode.still_path ? `https://image.tmdb.org/t/p/w200${episode.still_path}`  : placeholderTvImage}
-              alt={`Episode ${episode.episode_number}`}
+      {episodes.map((episode) => (
+        <div className="episode-card" key={episode.id}>
+          <img
+            src={episode.still_path ? `https://image.tmdb.org/t/p/w200${episode.still_path}` : placeholderTvImage}
+            alt={`Episode ${episode.episode_number}`}
             style={{ width: "200px", height: "133px" }}
-            />
-            <p>
-              Episode {episode.episode_number}
-            </p>
-            <p>
-              {episode.name}
-            </p>
-            <button className="Play-movie"  onClick={() => handleOpenStreamLink(episode.episode_number)}>
-                <span className="circle1" />
-                <span className="circle2" />
-                <span className="circle3" />
-                <span className="circle4" />
-                <span className="circle5" />
-                <span className="text">
-                  Watch Online
-                </span>
-              </button>
-          </div>
-        ))}
-        
-      </div>
+          />
+          <p>
+            Episode {episode.episode_number}
+          </p>
+          <p>
+            {episode.name}
+          </p>
+          <button className="Play-movie" onClick={() => handleWatchOnline(episode.episode_number)}>
+            <span className="circle1" />
+            <span className="circle2" />
+            <span className="circle3" />
+            <span className="circle4" />
+            <span className="circle5" />
+            <span className="text">
+              Watch Online
+            </span>
+          </button>
+        </div>
+      ))}
+    </div>
       <div className="media-slider">
         <h1>Media</h1>
         <div className="media-buttons">

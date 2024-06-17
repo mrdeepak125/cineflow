@@ -1538,7 +1538,7 @@ label {
     position: fixed;
     top: 64px;
     left: -90%;
-    width: 50%;
+    width: 80%;
     height: 100%;
     background: rgb(3, 37, 65);
     -webkit-backdrop-filter: blur(20px);
@@ -1562,13 +1562,14 @@ label {
     -ms-flex-direction: column;
     flex-direction: column;
     -ms-flex-wrap: nowrap;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
+    align-content: flex-start;
     -webkit-box-pack: start;
     -ms-flex-pack: start;
     justify-content: flex-start;
     -webkit-box-align: start;
     -ms-flex-align: start;
-    align-items: flex-start;
+    align-items: center;
     position: absolute;
   }
 

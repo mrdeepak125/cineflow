@@ -96,6 +96,7 @@ function Navbar({ updateSearchResults, setLoading }) {
           <ul>
             <li className='third-section'>
               <Link to="/Tvlist" onClick={toggleMenu}>TV</Link>
+              <Link to="/Anime" onClick={toggleMenu}>Anime</Link>
             </li>
           </ul>  
           <ul>

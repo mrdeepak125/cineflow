@@ -49,7 +49,7 @@ function Watchlist() {
         </div>
       ) : (
         <>
-          <h2>Movies</h2>
+          <h1>Movies</h1>
           <div className="movie-list">
             {movieWatchlist.map((item) => (
               <div className='movie-card' key={item.id}>
@@ -66,7 +66,7 @@ function Watchlist() {
             ))}
           </div>
 
-          <h2>TV Shows</h2>
+          <h1>TV Shows</h1>
           <div className="movie-list">
             {tvWatchlist.map((item) => (
               <div className='movie-card' key={item.id}>
