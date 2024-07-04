@@ -41,7 +41,9 @@ const WatchTv = () => {
   let streamUrl;
   const seasonNumber = seasonNum; // Use the correct season number from params
 
+  switch (selectedServer) {
 
+  }
 
   return (
     <div className='watch-movie-container'>

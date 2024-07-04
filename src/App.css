@@ -5,6 +5,13 @@
 * Browsers: last 4 version
 */
 
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
 :root {
   --black: #151515;
   --gray: #2C2E3A;
@@ -58,6 +65,8 @@ body {
   border: 1px solid var(--white);
   width: 400px;
   border-radius: 15px 0px 0px 15px;
+  height: 40px;
+  color: var(--white);
 }
 
 .navbar-search button {
@@ -1276,9 +1285,15 @@ label {
 }
 
 .Btn {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
   width: 45px;
   height: 45px;
   border: none;
@@ -1286,8 +1301,11 @@ label {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition-duration: 0.3s;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+  -webkit-transition-duration: 0.3s;
+       -o-transition-duration: 0.3s;
+          transition-duration: 0.3s;
+  -webkit-box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+          box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
   background-color: RGB(29, 185, 84);
 }
 
@@ -1301,10 +1319,18 @@ label {
 /* plus sign */
 .sign {
   width: 100%;
-  transition-duration: 0.3s;
+  -webkit-transition-duration: 0.3s;
+       -o-transition-duration: 0.3s;
+          transition-duration: 0.3s;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .sign svg {
@@ -1324,7 +1350,9 @@ label {
   color: black;
   font-size: 1.2em;
   font-weight: 600;
-  transition-duration: 0.3s;
+  -webkit-transition-duration: 0.3s;
+       -o-transition-duration: 0.3s;
+          transition-duration: 0.3s;
 }
 
 .text1 a {
@@ -1336,12 +1364,16 @@ label {
 .Btn:hover {
   width: 190px;
   border-radius: 40px;
-  transition-duration: 0.3s;
+  -webkit-transition-duration: 0.3s;
+       -o-transition-duration: 0.3s;
+          transition-duration: 0.3s;
 }
 
 .Btn:hover .sign {
   width: 30%;
-  transition-duration: 0.3s;
+  -webkit-transition-duration: 0.3s;
+       -o-transition-duration: 0.3s;
+          transition-duration: 0.3s;
   padding-left: 20px;
 }
 
@@ -1349,13 +1381,17 @@ label {
 .Btn:hover .text1 {
   opacity: 1;
   width: 70%;
-  transition-duration: 0.3s;
+  -webkit-transition-duration: 0.3s;
+       -o-transition-duration: 0.3s;
+          transition-duration: 0.3s;
   padding-right: 10px;
 }
 
 /* button click effect*/
 .Btn:active {
-  transform: translate(2px, 2px);
+  -webkit-transform: translate(2px, 2px);
+      -ms-transform: translate(2px, 2px);
+          transform: translate(2px, 2px);
 }
 
 .keyword {
@@ -1371,19 +1407,31 @@ label {
   color: var(--white);
   border-radius: 40px;
   background-color: var(--red);
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
   display: inline-flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-content: center;
-  justify-content: flex-start;
-  align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   max-width: 100px;
   max-height: 35px;
   cursor: pointer;
 }
 
 .movie-detail .keyword-list p {
-  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+     text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
   font-family: var(--mono);
@@ -1395,24 +1443,33 @@ label {
   height: 36px;
   border-radius: 50%;
   border-left-color: #09f;
-  animation: spin 1s ease infinite;
+  -webkit-animation: spin 1s ease infinite;
+          animation: spin 1s ease infinite;
   margin: 20px auto;
 }
 
 @keyframes spin {
   0% {
-    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
   }
 
   100% {
-    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
   }
 }
 
 .loading {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   height: 100vh;
 }
 
@@ -1449,12 +1506,23 @@ label {
 }
 
 .watch-movie-contaner {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .watch {
@@ -1472,9 +1540,13 @@ label {
   /* margin-bottom: 20px; */
   background-color: var(--dark-red);
   width: 100%;
-  flex-wrap: wrap;
-  align-content: center;
-  align-items: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .server-select button {
@@ -1514,13 +1586,16 @@ label {
 
 .movie-title{
   max-width: 10.625rem;
-  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+     text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 }
 /* Responsive styles */
-@media (max-width: 788px) {
-
+@media (max-width: 877px) {
+  .navbar-search input {
+    width: 400px;
+  }
   .navbar .navbar-brand,
   .navbar .navbar-menu,
   .navbar .dark-mode {
@@ -1563,7 +1638,8 @@ label {
     flex-direction: column;
     -ms-flex-wrap: nowrap;
     flex-wrap: wrap;
-    align-content: flex-start;
+    -ms-flex-line-pack: start;
+        align-content: flex-start;
     -webkit-box-pack: start;
     -ms-flex-pack: start;
     justify-content: flex-start;
