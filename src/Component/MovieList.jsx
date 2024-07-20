@@ -81,7 +81,7 @@ const Latest = () => {
           </div>
         )}
         <div className="show-load">
-          <div className="show-more">
+          <div className="show-more" onClick={handleShowMore}>
             <button onClick={handleShowMore} disabled={loading}>
               {loading ? 'Loading...' : 'Show More'}
             </button>
