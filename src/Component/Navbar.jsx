@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -7,9 +7,12 @@ const BASE_URL = 'https://api.themoviedb.org/3/search';
 
 function Navbar({ updateSearchResults, setLoading }) {
   const [query, setQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
   const [darkMode, setDarkMode] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [error, setError] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,6 +21,20 @@ function Navbar({ updateSearchResults, setLoading }) {
 
     document.body.style.backgroundColor = isDarkMode ? '#141619' : '#fff';
     document.body.style.color = isDarkMode ? '#B3B4BD' : '#141619';
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setSearchResults([]);
+        setDropdownOpen(false); // Close dropdown on outside click
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
   const toggleDarkMode = () => {
@@ -65,10 +82,44 @@ function Navbar({ updateSearchResults, setLoading }) {
     }
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSearch(e);
+  const handleQueryChange = async (e) => {
+    setQuery(e.target.value);
+
+    if (e.target.value.trim()) {
+      try {
+        // Fetch both movies and TV shows
+        const [movieResponse, tvResponse] = await Promise.all([
+          axios.get(`${BASE_URL}/movie`, { params: { api_key: API_KEY, query: e.target.value } }),
+          axios.get(`${BASE_URL}/tv`, { params: { api_key: API_KEY, query: e.target.value } })
+        ]);
+
+        // Combine results from both queries
+        const combinedResults = [
+          ...movieResponse.data.results.map(result => ({ ...result, type: 'movie' })),
+          ...tvResponse.data.results.map(result => ({ ...result, type: 'tv' }))
+        ];
+
+        setSearchResults(combinedResults);
+        setDropdownOpen(true); // Open dropdown when there are results
+      } catch (err) {
+        console.error('Error fetching search results:', err);
+      }
+    } else {
+      setSearchResults([]);
+      setDropdownOpen(false); // Close dropdown if query is empty
     }
+  };
+
+  const handleResultClick = (result) => {
+    setQuery(result.title || result.name);
+    setSearchResults([]);
+    setDropdownOpen(false); // Close dropdown on result click
+    updateSearchResults({
+      movies: result.type === 'movie' ? [result] : [],
+      tvShows: result.type === 'tv' ? [result] : [],
+      query: result.title || result.name
+    });
+    navigate(`/search?q=${result.title || result.name}`);
   };
 
   return (
@@ -119,16 +170,29 @@ function Navbar({ updateSearchResults, setLoading }) {
         <div className="navbar-search">
           <input
             type="text"
-            placeholder="Search movies and TV shows..."
+            placeholder="Search movies and TV shows / Anime..."
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyPress={handleKeyPress}
+            onChange={handleQueryChange}
+            onKeyPress={(e) => { if (e.key === 'Enter') handleSearch(e); }}
+            className={dropdownOpen ? 'filled' : 'empty'}
           />
-          <button onClick={handleSearch}>
+          <button onClick={handleSearch} className={dropdownOpen ? 'filled' : 'empty'}>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-search" viewBox="0 0 16 16">
               <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
             </svg>
           </button>
+          {searchResults.length > 0 && (
+            <div className="search-results-dropdown" ref={dropdownRef}>
+              {searchResults.map((result) => (
+                <div key={result.id} className="search-result-item" onClick={() => handleResultClick(result)}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                  </svg>
+                  {result.title || result.name}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <div className="dark-mode">
           <label className="ui-switch">

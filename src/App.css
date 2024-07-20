@@ -1596,6 +1596,9 @@ label {
   .navbar-search input {
     width: 400px;
   }
+  .navbar-search input.filled {
+    width: 400px;
+  }
   .navbar .navbar-brand,
   .navbar .navbar-menu,
   .navbar .dark-mode {
@@ -1730,6 +1733,9 @@ label {
   .navbar-search input {
     width: 300px;
   }
+  .navbar-search input.filled {
+    width: 300px;
+  }
 
   .no-results img {
     width: 350px;
@@ -1738,6 +1744,9 @@ label {
 
 @media (max-width: 455px) {
   .navbar-search input {
+    width: 200px;
+  }
+  .navbar-search input.filled {
     width: 200px;
   }
 
@@ -1764,8 +1773,60 @@ label {
   .navbar-search input {
     width: 150px;
   }
+  .navbar-search input.filled {
+    width: 150px;
+  }
 
   .movie-bar a {
     font-size: 13px;
   }
+}
+
+/* CSS when search bar is filled */
+.navbar-search input.filled {
+  border-radius: 15px 0px 0px 0px;
+}
+
+.navbar-search button.filled {
+  background-color: var(--black);
+  border: 1px solid var(--white);
+  width: 40px;
+  height: 40px;
+  border-radius: 0px 15px 0px 0px;
+  cursor: pointer;
+}
+
+/* CSS for search results dropdown */
+.search-results-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--black);
+  border: 1px solid var(--white);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+  border-radius: 0 0 15px 15px;
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+}
+
+.search-result-item svg {
+  margin-right: 10px;
+}
+
+.search-result-item:hover {
+  background-color: #333;
+}
+
+.navbar-search {
+  position: relative;
 }
