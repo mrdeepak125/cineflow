@@ -10,9 +10,9 @@ function Navbar({ updateSearchResults, setLoading }) {
   const [searchResults, setSearchResults] = useState([]);
   const [darkMode, setDarkMode] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [error, setError] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const menuBarRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,6 +28,9 @@ function Navbar({ updateSearchResults, setLoading }) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setSearchResults([]);
         setDropdownOpen(false); // Close dropdown on outside click
+      }
+      if (menuBarRef.current && !menuBarRef.current.contains(event.target)) {
+        setMenuOpen(false); // Close menu bar on outside click
       }
     };
 
@@ -52,8 +55,6 @@ function Navbar({ updateSearchResults, setLoading }) {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    setError(null);
-
     if (!query.trim()) {
       updateSearchResults({ movies: [], tvShows: [], query });
       navigate('/search');
@@ -76,7 +77,7 @@ function Navbar({ updateSearchResults, setLoading }) {
       updateSearchResults({ movies, tvShows, query });
       navigate('/search');
     } catch (e) {
-      setError('Error fetching search results: ' + e.message);
+      console.error('Error fetching search results:', e);
     } finally {
       setLoading(false);
     }
@@ -130,7 +131,7 @@ function Navbar({ updateSearchResults, setLoading }) {
             <path fillRule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
           </svg>
         </div>
-        <div className={`menu-bar ${menuOpen ? 'show' : ''}`} id="menuBar">
+        <div className={`menu-bar ${menuOpen ? 'show' : ''}`} id="menuBar" ref={menuBarRef}>
           <ul>
             <li className='first-section'>
               <Link to="/" onClick={toggleMenu}>Home</Link>
