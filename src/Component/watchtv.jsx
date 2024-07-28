@@ -41,9 +41,7 @@ const WatchTv = () => {
   let streamUrl;
   const seasonNumber = seasonNum; // Use the correct season number from params
 
-  switch (selectedServer) {
 
-  }
 
   return (
     <div className='watch-movie-container'>
@@ -75,6 +73,12 @@ const WatchTv = () => {
           className={selectedServer === 'server3' ? 'active' : ''}
         >
           Server 3
+        </button>
+        <button
+          onClick={() => setSelectedServer('server4')}
+          className={selectedServer === 'server4' ? 'active' : ''}
+        >
+          Server 4
         </button>
       </div>
     </div>
