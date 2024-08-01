@@ -1,4 +1,7 @@
+[![Follow me](https://img.shields.io/github/followers/mrdeepak125?style=social)](https://github.com/mrdeepak125)
+[![Star this Repo](https://img.shields.io/github/stars/mrdeepak125/music-with-react?style=social)](https://github.com/mrdeepak125/music-with-react)
 
+<br/>
 # Cineflow  Website
 
 ![Cineflex Logo](./src/assets/photo.png)
