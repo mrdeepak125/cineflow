@@ -1,7 +1,7 @@
 
 # Cineflow  Website
 
-![Cineflex Logo](src/assets/cineflow.netlify.app_ (1))
+![Cineflex Logo](src/assets/cineflow.netlify.app_ (1).png)
 
 The Cineflow  Website is a web application that aims to replicate the popular , Netflix. It provides users with the ability to browse and stream a wide range of movies and TV shows on-demand. The website is built using React, CSS, Javascript and Html with additional libraries and frameworks as needed.
 
