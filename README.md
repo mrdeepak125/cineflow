@@ -66,13 +66,6 @@ To run the Cineflow  Website locally, follow these steps:
 
 6. Open a web browser and visit [http://localhost:3000](http://localhost:3000) to access the Cineflow  Website.
 
-7. Also all dependence's install
-
-  ```bas
-    npm install movie-trailer
-    npm install react-youtube
-    npm install -g firebase-tools
-  ```
 ## Usage
 
 Once the website is running, users can user direct access website. They can then browse the available movies and TV shows, search for specific titles or genres, and view detailed information about each content item. Users can start streaming a selected video, adjust playback settings, and manage their watchlist.
