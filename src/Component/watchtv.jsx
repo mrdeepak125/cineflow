@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import './adBlocker.css'; // Import the ad-blocker CSS
 
 const WatchTv = () => {
-  const { tvName, seasonNum, episodeNum, id } = useParams(); // Fetching params from the URL
+  const { tvName, seasonNum, episodeNum, id } = useParams();
   const navigate = useNavigate();
   const [selectedServer, setSelectedServer] = useState('server1');
+  const iframeRef = useRef(null);
 
   useEffect(() => {
-    window.scrollTo(0, 0); // Scroll to top when the component mounts
+    window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
@@ -36,16 +38,130 @@ const WatchTv = () => {
     return () => clearInterval(intervalId);
   }, [navigate]);
 
-  const formattedTvName = tvName.replace(/\s+/g, '-'); // Replace spaces with hyphens
+  useEffect(() => {
+    const blockAdsAndPopups = () => {
+      const adSelectors = [
+        'iframe[src*="ads"]',
+        'iframe[src*="popads"]',
+        'iframe[src*="ad"]',
+        'div[id*="ads"]',
+        'div[class*="ads"]',
+        'div[class*="ad"]',
+        'div[id*="ad"]',
+        'div[class*="banner"]',
+        'div[id*="banner"]',
+        'div[class*="overlay"]',
+        'div[id*="overlay"]',
+        'div[class*="popup"]',
+        'div[id*="popup"]',
+        'div[class*="modal"]',
+        'div[id*="modal"]',
+        'div[class*="redirect"]',
+        'div[id*="redirect"]'
+      ];
+
+      adSelectors.forEach(selector => {
+        const ads = document.querySelectorAll(selector);
+        ads.forEach(ad => ad.remove());
+      });
+
+      document.body.addEventListener('click', (e) => {
+        if (e.target.closest('a') && e.target.closest('a').href.includes('redirect')) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }, true);
+
+      document.body.addEventListener('mousedown', (e) => {
+        if (e.target.closest('a') && e.target.closest('a').href.includes('redirect')) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }, true);
+
+      document.body.addEventListener('mouseup', (e) => {
+        if (e.target.closest('a') && e.target.closest('a').href.includes('redirect')) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }, true);
+
+      window.addEventListener('beforeunload', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        e.returnValue = '';
+      }, true);
+    };
+
+    blockAdsAndPopups();
+    const observer = new MutationObserver(blockAdsAndPopups);
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    const handleIframeLoad = () => {
+      try {
+        const iframeDocument = iframeRef.current.contentDocument || iframeRef.current.contentWindow.document;
+
+        const observer = new MutationObserver(blockAdsAndPopups);
+        observer.observe(iframeDocument.body, { childList: true, subtree: true });
+
+        iframeDocument.body.addEventListener('click', (e) => {
+          if (e.target.closest('a') && e.target.closest('a').href.includes('redirect')) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }, true);
+
+        iframeDocument.body.addEventListener('mousedown', (e) => {
+          if (e.target.closest('a') && e.target.closest('a').href.includes('redirect')) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }, true);
+
+        iframeDocument.body.addEventListener('mouseup', (e) => {
+          if (e.target.closest('a') && e.target.closest('a').href.includes('redirect')) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }, true);
+
+        iframeDocument.body.addEventListener('beforeunload', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          e.returnValue = '';
+        }, true);
+
+        blockAdsAndPopups();
+      } catch (error) {
+        console.error('Cross-origin iframe: Cannot access content');
+      }
+    };
+
+    if (iframeRef.current) {
+      iframeRef.current.addEventListener('load', handleIframeLoad);
+    }
+
+    return () => {
+      if (iframeRef.current) {
+        iframeRef.current.removeEventListener('load', handleIframeLoad);
+      }
+      observer.disconnect();
+    };
+  }, []);
+
+  const formattedTvName = tvName.replace(/\s+/g, '-');
 
   let streamUrl;
-  const seasonNumber = seasonNum; // Use the correct season number from params
+  const seasonNumber = seasonNum;
 
-
+  switch (selectedServer) {
+    
+  }
 
   return (
     <div className='watch-movie-container'>
       <iframe
+        ref={iframeRef}
         className='watch'
         src={streamUrl}
         width="100%"
@@ -79,6 +195,12 @@ const WatchTv = () => {
           className={selectedServer === 'server4' ? 'active' : ''}
         >
           Server 4
+        </button>
+        <button
+          onClick={() => setSelectedServer('server5')}
+          className={selectedServer === 'server5' ? 'active' : ''}
+        >
+          Server 5
         </button>
       </div>
     </div>

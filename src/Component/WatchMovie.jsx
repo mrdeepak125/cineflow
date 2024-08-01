@@ -1,35 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import './adBlocker.css'; // Import the ad-blocker CSS
 
-const WatchMovie = () => {
-  const { id, imdb_id } = useParams();
+const WatchMedia = () => {
+  const { id, imdb_id, tvName, seasonNum, episodeNum } = useParams();
   const navigate = useNavigate();
   const [selectedServer, setSelectedServer] = useState('server1');
+  const iframeRef = useRef(null);
 
   useEffect(() => {
-    window.scrollTo(0, 0); // Scroll to top when the component mounts
+    window.scrollTo(0, 0);
   }, []);
-  
+
   useEffect(() => {
     const detectDevTools = () => {
       const threshold = 100;
       const start = performance.now();
 
-      // Using console method interception
       const element = new Image();
       Object.defineProperty(element, 'id', {
         get: () => {
-          navigate(-1); // Navigate to the previous page
+          navigate(-1);
         }
       });
 
       console.log(element);
       console.clear();
 
-      // Using debugger statement detection
       const end = performance.now();
       if (end - start > threshold) {
-        navigate(-1); // Navigate to the previous page
+        navigate(-1);
       }
     };
 
@@ -38,13 +38,155 @@ const WatchMovie = () => {
     return () => clearInterval(intervalId);
   }, [navigate]);
 
+  useEffect(() => {
+    const blockAdsAndPopups = () => {
+      const adSelectors = [
+        'iframe[src*="ads"]',
+        'iframe[src*="popads"]',
+        'iframe[src*="ad"]',
+        'div[id*="ads"]',
+        'div[class*="ads"]',
+        'div[class*="ad"]',
+        'div[id*="ad"]',
+        'div[class*="banner"]',
+        'div[id*="banner"]',
+        'div[class*="overlay"]',
+        'div[id*="overlay"]',
+        'div[class*="popup"]',
+        'div[id*="popup"]',
+        'div[class*="modal"]',
+        'div[id*="modal"]',
+        'div[class*="redirect"]',
+        'div[id*="redirect"]'
+      ];
+
+      adSelectors.forEach(selector => {
+        const ads = document.querySelectorAll(selector);
+        ads.forEach(ad => ad.remove());
+      });
+
+      document.body.addEventListener('click', (e) => {
+        if (e.target.closest('a') && e.target.closest('a').href.includes('redirect')) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }, true);
+
+      document.body.addEventListener('mousedown', (e) => {
+        if (e.target.closest('a') && e.target.closest('a').href.includes('redirect')) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }, true);
+
+      document.body.addEventListener('mouseup', (e) => {
+        if (e.target.closest('a') && e.target.closest('a').href.includes('redirect')) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }, true);
+
+      window.addEventListener('beforeunload', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        e.returnValue = '';
+      }, true);
+    };
+
+    blockAdsAndPopups();
+    const observer = new MutationObserver(blockAdsAndPopups);
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    const handleIframeLoad = () => {
+      try {
+        const iframeDocument = iframeRef.current.contentDocument || iframeRef.current.contentWindow.document;
+
+        const observer = new MutationObserver(blockAdsAndPopups);
+        observer.observe(iframeDocument.body, { childList: true, subtree: true });
+
+        iframeDocument.body.addEventListener('click', (e) => {
+          if (e.target.closest('a') && e.target.closest('a').href.includes('redirect')) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }, true);
+
+        iframeDocument.body.addEventListener('mousedown', (e) => {
+          if (e.target.closest('a') && e.target.closest('a').href.includes('redirect')) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }, true);
+
+        iframeDocument.body.addEventListener('mouseup', (e) => {
+          if (e.target.closest('a') && e.target.closest('a').href.includes('redirect')) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }, true);
+
+        iframeDocument.body.addEventListener('beforeunload', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          e.returnValue = '';
+        }, true);
+
+        blockAdsAndPopups();
+      } catch (error) {
+        console.error('Cross-origin iframe: Cannot access content');
+      }
+    };
+
+    if (iframeRef.current) {
+      iframeRef.current.addEventListener('load', handleIframeLoad);
+    }
+
+    return () => {
+      if (iframeRef.current) {
+        iframeRef.current.removeEventListener('load', handleIframeLoad);
+      }
+      observer.disconnect();
+    };
+  }, []);
+
+  const isTvShow = tvName && seasonNum && episodeNum;
+
   let streamUrl;
 
-  
+  if (isTvShow) {
+    const formattedTvName = tvName.replace(/\s+/g, '-');
+    const seasonNumber = seasonNum;
+
+    switch (selectedServer) {
+      case 'server1':
+        streamUrl = `https://vidstreaming.cam/embed/tv/${id}?season=${seasonNumber}&episode=${episodeNum}`;
+        break;
+      case 'server2':
+        streamUrl = `https://player.smashy.stream/tv/${id}?s=${seasonNumber}&e=${episodeNum}`;
+        break;
+      case 'server3':
+        streamUrl = `https://2anime.xyz/embed/${formattedTvName}-episode-${episodeNum}`;
+        break;
+      case 'server4':
+        streamUrl = `https://vidsrc.me/embed/tv?tmdb=${id}&season=${seasonNumber}&episode=${episodeNum}`;
+        break;
+      case 'server5':
+        streamUrl = `https://multiembed.mov/directstream.php?video_id=${id}&tmdb=1&s=${seasonNumber}&e=${episodeNum}`;
+        break;
+      default:
+        streamUrl = `https://vidstreaming.cam/embed/tv/${id}?season=${seasonNumber}&episode=${episodeNum}`;
+        break;
+    }
+  } else {
+    switch (selectedServer) {
+      
+    }
+  }
 
   return (
     <div className='watch-movie-container'>
       <iframe
+        ref={iframeRef}
         className='watch'
         src={streamUrl}
         width="100%"
@@ -52,7 +194,7 @@ const WatchMovie = () => {
         frameBorder="0"
         scrolling="no"
         allowFullScreen
-        title="Watch Movie"
+        title={isTvShow ? "Watch TV Show" : "Watch Movie"}
       />
       <div className="server-select">
         <button
@@ -79,9 +221,15 @@ const WatchMovie = () => {
         >
           Server 4
         </button>
+        <button
+          onClick={() => setSelectedServer('server5')}
+          className={selectedServer === 'server5' ? 'active' : ''}
+        >
+          Server 5
+        </button>
       </div>
     </div>
   );
 };
 
-export default WatchMovie;
+export default WatchMedia;
