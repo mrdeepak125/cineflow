@@ -1,7 +1,7 @@
 
 # Cineflow  Website
 
-![Cineflex Logo](src/public/cinema.svg)
+![Cineflex Logo](public/cinema.svg)
 
 The Cineflow  Website is a web application that aims to replicate the popular , Netflix. It provides users with the ability to browse and stream a wide range of movies and TV shows on-demand. The website is built using React, CSS, Javascript and Html with additional libraries and frameworks as needed.
 
@@ -39,7 +39,7 @@ To run the Cineflow  Website locally, follow these steps:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/netflix-streaming-platform.git
+   git clone https://github.com/mrdeepak125/cineflow.git
    ```
 
 2. Navigate to the project directory:
