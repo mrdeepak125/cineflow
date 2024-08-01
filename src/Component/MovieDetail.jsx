@@ -43,7 +43,7 @@ function MovieDetail() {
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to top when the component mounts
   }, []);
-  
+
   // Function to fetch movie details
   const fetchMovieDetails = async () => {
     try {
@@ -55,12 +55,23 @@ function MovieDetail() {
       const recommendationsData = await getMovieRecommendations(id);
       const keywordsData = await getMovieKeywords(id);
 
-      if (!movieData || !trailerData || !imagesData || !creditsData || !recommendationsData || !keywordsData) {
-        throw new Error("Failed to fetch movie details, trailer, images, credits, recommendations, or keywords");
+      if (
+        !movieData ||
+        !trailerData ||
+        !imagesData ||
+        !creditsData ||
+        !recommendationsData ||
+        !keywordsData
+      ) {
+        throw new Error(
+          "Failed to fetch movie details, trailer, images, credits, recommendations, or keywords"
+        );
       }
 
       setMovie(movieData);
-      const trailer = trailerData.results.find((video) => video.type === "Trailer" && video.site === "YouTube");
+      const trailer = trailerData.results.find(
+        (video) => video.type === "Trailer" && video.site === "YouTube"
+      );
       setTrailer(trailer);
       setImages(imagesData.backdrops);
       setVideos(trailerData.results);
@@ -129,15 +140,28 @@ function MovieDetail() {
       const trailerData = await getMovieTrailers(recommendationId);
       const imagesData = await getMovieImages(recommendationId);
       const creditsData = await getMovieCredits(recommendationId);
-      const recommendationsData = await getMovieRecommendations(recommendationId);
+      const recommendationsData = await getMovieRecommendations(
+        recommendationId
+      );
       const keywordsData = await getMovieKeywords(recommendationId);
 
-      if (!movieData || !trailerData || !imagesData || !creditsData || !recommendationsData || !keywordsData) {
-        throw new Error("Failed to fetch movie details, trailer, images, credits, recommendations, or keywords");
+      if (
+        !movieData ||
+        !trailerData ||
+        !imagesData ||
+        !creditsData ||
+        !recommendationsData ||
+        !keywordsData
+      ) {
+        throw new Error(
+          "Failed to fetch movie details, trailer, images, credits, recommendations, or keywords"
+        );
       }
 
       setMovie(movieData);
-      const trailer = trailerData.results.find((video) => video.type === "Trailer" && video.site === "YouTube");
+      const trailer = trailerData.results.find(
+        (video) => video.type === "Trailer" && video.site === "YouTube"
+      );
       setTrailer(trailer);
       setImages(imagesData.backdrops);
       setVideos(trailerData.results);

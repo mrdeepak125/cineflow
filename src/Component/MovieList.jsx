@@ -27,13 +27,13 @@ const Latest = () => {
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to top when the component mounts
   }, []);
-  
+
   useEffect(() => {
     fetchLatestMovies(currentPage);
-    const savedScrollPosition = localStorage.getItem('scrollPosition');
+    const savedScrollPosition = localStorage.getItem("scrollPosition");
     if (savedScrollPosition) {
       window.scrollTo(0, parseInt(savedScrollPosition, 10));
-      localStorage.removeItem('scrollPosition');
+      localStorage.removeItem("scrollPosition");
     }
   }, [currentPage]);
 
@@ -42,7 +42,7 @@ const Latest = () => {
   };
 
   const handleMovieClick = (movieId) => {
-    localStorage.setItem('scrollPosition', window.scrollY);
+    localStorage.setItem("scrollPosition", window.scrollY);
     navigate(`/movie/${movieId}`);
   };
 
@@ -58,7 +58,6 @@ const Latest = () => {
     return <div>{error}</div>;
   }
 
-
   return (
     <div className="container">
       <div className="section">
@@ -66,9 +65,17 @@ const Latest = () => {
         <h1 className="section-title">Top Movies to Watch in 2024</h1>
         <div className="movie-list">
           {latestMovies.map((movie) => (
-            <div className="movie-card" key={movie.id} onClick={() => handleMovieClick(movie.id)}>
+            <div
+              className="movie-card"
+              key={movie.id}
+              onClick={() => handleMovieClick(movie.id)}
+            >
               <img
-                src={movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg'}
+                src={
+                  movie.poster_path
+                    ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
+                    : "https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg"
+                }
                 alt={movie.title}
               />
               <h4 className="movie-title">{movie.title}</h4>
@@ -83,7 +90,7 @@ const Latest = () => {
         <div className="show-load">
           <div className="show-more" onClick={handleShowMore}>
             <button onClick={handleShowMore} disabled={loading}>
-              {loading ? 'Loading...' : 'Show More'}
+              {loading ? "Loading..." : "Show More"}
             </button>
           </div>
         </div>

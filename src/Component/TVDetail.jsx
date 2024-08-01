@@ -10,8 +10,10 @@ import {
 } from "../lib/tvfetch";
 import Modal from "./Modal";
 import { addToTvWatchlist, removeFromTvWatchlist } from "../lib/indexedDB";
-const placeholderTvImage = 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg';
-const placeholderImage = 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-4-user-grey-d8fe957375e70239d6abdd549fd7568c89281b2179b5f4470e2e12895792dfa5.svg';
+const placeholderTvImage =
+  "https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg";
+const placeholderImage =
+  "https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-4-user-grey-d8fe957375e70239d6abdd549fd7568c89281b2179b5f4470e2e12895792dfa5.svg";
 
 function TVDetail({ tvShow }) {
   const { id, season_number, episode_number } = useParams(); // Include season and episode from params
@@ -88,8 +90,16 @@ function TVDetail({ tvShow }) {
         const creditsData = await getTVCredits(id);
         const recommendationsData = await getTVRecommendations(id);
 
-        if (!tvData || !trailerData || !imagesData || !creditsData || !recommendationsData) {
-          throw new Error("Failed to fetch TV details, trailer, images, credits or recommendations");
+        if (
+          !tvData ||
+          !trailerData ||
+          !imagesData ||
+          !creditsData ||
+          !recommendationsData
+        ) {
+          throw new Error(
+            "Failed to fetch TV details, trailer, images, credits or recommendations"
+          );
         }
 
         setTV(tvData);
@@ -144,7 +154,6 @@ function TVDetail({ tvShow }) {
     setActiveMedia(type);
   };
 
-
   const handleSeasonChange = (seasonNum) => {
     setSelectedSeason(seasonNum);
   };
@@ -162,14 +171,17 @@ function TVDetail({ tvShow }) {
   }
 
   const handleWatchOnline = (episodeNum) => {
-    navigate(`/watchtv/${encodeURIComponent(tv.name)}/${selectedSeason}/${episodeNum}/${id}`);
+    navigate(
+      `/watchtv/${encodeURIComponent(
+        tv.name
+      )}/${selectedSeason}/${episodeNum}/${id}`
+    );
   };
-
 
   return (
     <>
       <div className="movie-detail">
-            {loading }
+        {loading}
         <div className="movie-container">
           <div className="poster-container" onClick={handlePlayTrailer}>
             <img
@@ -177,22 +189,37 @@ function TVDetail({ tvShow }) {
               alt={tv.name}
             />
             <div className="play-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-play-circle" viewBox="0 0 16 16">
-                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                <path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                className="bi bi-play-circle"
+                viewBox="0 0 16 16"
+              >
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                <path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445" />
               </svg>
             </div>
           </div>
           <div className="movie-info">
-            <h2>{tv.name}</h2><br />
+            <h2>{tv.name}</h2>
+            <br />
             <h3>📽️ OVER VIEW</h3>
-            <p>{tv.overview}</p><br />
-            <p>⭐ Rating: {tv.vote_average}</p><br />
-            <p>📅 First Air Date: {tv.first_air_date}</p><br />
+            <p>{tv.overview}</p>
+            <br />
+            <p>⭐ Rating: {tv.vote_average}</p>
+            <br />
+            <p>📅 First Air Date: {tv.first_air_date}</p>
+            <br />
             <p>🔤 Language : {tv.original_language}</p>
             <div className="movie-button">
               <label className="bookmark" htmlFor="checkboxInput">
-                <input id="checkboxInput" type="checkbox" onClick={handleSaveToWatchlist} />
+                <input
+                  id="checkboxInput"
+                  type="checkbox"
+                  onClick={handleSaveToWatchlist}
+                />
                 <svg
                   className="svgIcon"
                   fill="none"
@@ -208,9 +235,17 @@ function TVDetail({ tvShow }) {
                 </svg>
               </label>
               <button className="play-button" onClick={handlePlayTrailer}>
-                <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="15px">
-                  <path d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z" fill="currentColor"></path>
-                </svg> 
+                <svg
+                  viewBox="0 0 448 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                  width="15px"
+                >
+                  <path
+                    d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
               </button>
               {/* <div className="server-dropdown">
                 <select value={selectedServer} onChange={(e) => setSelectedServer(e.target.value)}>
@@ -242,7 +277,7 @@ function TVDetail({ tvShow }) {
       </div>
       <div className="media-buttons">
         <div className="server-dropdown">
-          <label  htmlFor="season-select">Select Season:</label>
+          <label htmlFor="season-select">Select Season:</label>
           <select
             id="season-select"
             value={selectedSeason}
@@ -257,32 +292,33 @@ function TVDetail({ tvShow }) {
         </div>
       </div>
       <div className="episodes-list">
-      {episodes.map((episode) => (
-        <div className="episode-card" key={episode.id}>
-          <img
-            src={episode.still_path ? `https://image.tmdb.org/t/p/w200${episode.still_path}` : placeholderTvImage}
-            alt={`Episode ${episode.episode_number}`}
-            style={{ width: "200px", height: "133px" }}
-          />
-          <p>
-            Episode {episode.episode_number}
-          </p>
-          <p>
-            {episode.name}
-          </p>
-          <button className="Play-movie" onClick={() => handleWatchOnline(episode.episode_number)}>
-            <span className="circle1" />
-            <span className="circle2" />
-            <span className="circle3" />
-            <span className="circle4" />
-            <span className="circle5" />
-            <span className="text">
-              Watch Online
-            </span>
-          </button>
-        </div>
-      ))}
-    </div>
+        {episodes.map((episode) => (
+          <div className="episode-card" key={episode.id}>
+            <img
+              src={
+                episode.still_path
+                  ? `https://image.tmdb.org/t/p/w200${episode.still_path}`
+                  : placeholderTvImage
+              }
+              alt={`Episode ${episode.episode_number}`}
+              style={{ width: "200px", height: "133px" }}
+            />
+            <p>Episode {episode.episode_number}</p>
+            <p>{episode.name}</p>
+            <button
+              className="Play-movie"
+              onClick={() => handleWatchOnline(episode.episode_number)}
+            >
+              <span className="circle1" />
+              <span className="circle2" />
+              <span className="circle3" />
+              <span className="circle4" />
+              <span className="circle5" />
+              <span className="text">Watch Online</span>
+            </button>
+          </div>
+        ))}
+      </div>
       <div className="media-slider">
         <h1>Media</h1>
         <div className="media-buttons">
@@ -302,14 +338,16 @@ function TVDetail({ tvShow }) {
         <div className="media-content">
           {activeMedia === "photos" && (
             <>
-              {images.slice(0, showAllImages ? images.length : 4).map((image) => (
-                <img
-                  className="media-image"
-                  key={image.file_path}
-                  src={`https://image.tmdb.org/t/p/w500${image.file_path}`}
-                  alt="TV backdrop"
-                />
-              ))}
+              {images
+                .slice(0, showAllImages ? images.length : 4)
+                .map((image) => (
+                  <img
+                    className="media-image"
+                    key={image.file_path}
+                    src={`https://image.tmdb.org/t/p/w500${image.file_path}`}
+                    alt="TV backdrop"
+                  />
+                ))}
               {!showAllImages && images.length > 4 && (
                 <button className="view-all" onClick={handleViewAllImages}>
                   View All
@@ -319,18 +357,20 @@ function TVDetail({ tvShow }) {
           )}
           {activeMedia === "videos" && (
             <>
-              {videos.slice(0, showAllImages ? videos.length : 10).map((video) => (
-                <iframe
-                  key={video.id}
-                  width="560"
-                  height="315"
-                  src={`https://www.youtube.com/embed/${video.key}`}
-                  title={video.name}
-                  frameBorder="0"
-                  allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
-              ))}
+              {videos
+                .slice(0, showAllImages ? videos.length : 10)
+                .map((video) => (
+                  <iframe
+                    key={video.id}
+                    width="560"
+                    height="315"
+                    src={`https://www.youtube.com/embed/${video.key}`}
+                    title={video.name}
+                    frameBorder="0"
+                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                ))}
             </>
           )}
         </div>
@@ -341,9 +381,11 @@ function TVDetail({ tvShow }) {
           <div className="cast-member" key={member.id}>
             <Link to={`/person/${member.id}`}>
               <img
-                src={member.profile_path
-                  ? `https://image.tmdb.org/t/p/w200${member.profile_path}`
-                  : placeholderImage}
+                src={
+                  member.profile_path
+                    ? `https://image.tmdb.org/t/p/w200${member.profile_path}`
+                    : placeholderImage
+                }
                 alt={member.name}
               />
             </Link>
@@ -362,9 +404,13 @@ function TVDetail({ tvShow }) {
             onClick={() => handleRecommendationClick(rec.id)}
           >
             <img
-              src={rec.poster_path ? `https://image.tmdb.org/t/p/w200${rec.poster_path}` : placeholderTvImage}
+              src={
+                rec.poster_path
+                  ? `https://image.tmdb.org/t/p/w200${rec.poster_path}`
+                  : placeholderTvImage
+              }
               alt={rec.name}
-            style={{ width: "200px", height: "300px" }}
+              style={{ width: "200px", height: "300px" }}
             />
             <p>{rec.name}</p>
           </div>

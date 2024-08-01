@@ -14,7 +14,10 @@ const Upcoming = () => {
       const response = await axios.get(
         `https://api.themoviedb.org/3/movie/upcoming?language=en-US&api_key=7607c1248159387aca334387ac63e608&page=${page}`
       );
-      setUpcomingMovies((prevMovies) => [...prevMovies, ...response.data.results]);
+      setUpcomingMovies((prevMovies) => [
+        ...prevMovies,
+        ...response.data.results,
+      ]);
       setLoading(false);
     } catch (err) {
       setError(err.message);
@@ -25,12 +28,10 @@ const Upcoming = () => {
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to top when the component mounts
   }, []);
-  
+
   useEffect(() => {
     fetchUpcomingMovies(currentPage);
   }, [currentPage]);
-
-
 
   const handleShowMore = () => {
     setCurrentPage((prevPage) => prevPage + 1);
@@ -57,7 +58,11 @@ const Upcoming = () => {
             <div className="movie-card" key={movie.id}>
               <Link to={`/movie/${movie.id}`}>
                 <img
-                  src={movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg'}
+                  src={
+                    movie.poster_path
+                      ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
+                      : "https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg"
+                  }
                   alt={movie.title}
                   // style={{ width: "150px", height: "225px" }}
                 />
@@ -73,12 +78,12 @@ const Upcoming = () => {
           </div>
         )}
         <div className="show-load">
-        <div className="show-more">
-          <button onClick={handleShowMore} disabled={loading}>
-            {loading ? "Loading..." : "Show More"}
-          </button>
+          <div className="show-more">
+            <button onClick={handleShowMore} disabled={loading}>
+              {loading ? "Loading..." : "Show More"}
+            </button>
+          </div>
         </div>
-      </div>
       </div>
     </div>
   );
